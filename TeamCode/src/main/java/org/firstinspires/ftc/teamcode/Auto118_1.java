@@ -12,10 +12,12 @@ public class Auto118_1 extends AutoMethods {
 
     int opState = 1;
     public char side;
+
     @Override
     public void init() {
         super.init();
     }
+
     public double[] drivePower = new double[2];
 
 
@@ -24,22 +26,26 @@ public class Auto118_1 extends AutoMethods {
 
         if (opState % 2 == 0) {
             reset_drive_encoders();
-            if (have_encoders_reset()){
-                opState ++;
+            if (have_encoders_reset()) {
+                opState++;
             }
         }
         switch (opState) {
+            case 1:
+                busySleep(1000000);
 
-
-            case 1: //drive forward 38 inches
-                set_drive_power(1.0);
-                if (have_encoders_reached(getNumTicks(38))) {
+            case 3:
+                set_drive_power(-1.0);
+                if (have_encoders_reached(getNumTicks(78))) {
                     set_drive_power(0);
                     opState++;
                 }
 
                 break;
-
+            case 5:
+                set_drive_power(0);
+                break;
+            /*
             case 3: //turn left
 
                 int degrees = 90 % 360;
@@ -67,7 +73,7 @@ public class Auto118_1 extends AutoMethods {
 
             case 5: // 46 forward
                 set_drive_power(1.0);
-                if (have_encoders_reached(getNumTicks(46))) {
+                if (!have_encoders_reached(getNumTicks(46))) {
                     set_drive_power(0);
                     opState++;
                 }
@@ -119,7 +125,7 @@ public class Auto118_1 extends AutoMethods {
 
             case 19: //38 forward
                 set_drive_power(1.0);
-                if (have_encoders_reached(getNumTicks(38))) {
+                if (!have_encoders_reached(getNumTicks(38))) {
                     set_drive_power(0);
                     opState++;
                 }
@@ -160,7 +166,7 @@ public class Auto118_1 extends AutoMethods {
 
             case 27: //some forward
                 set_drive_power(1.0);
-                if (have_encoders_reached(getNumTicks(2))) {
+                if (!have_encoders_reached(getNumTicks(2))) {
                     set_drive_power(0);
                     opState++;
                 }
@@ -168,7 +174,7 @@ public class Auto118_1 extends AutoMethods {
 
             case 29: //some back
                 set_drive_power(-1.0);
-                if (have_encoders_reached(getNumTicks(2))) {
+                if (!have_encoders_reached(getNumTicks(2))) {
                     set_drive_power(0);
                     opState++;
                 }
@@ -180,7 +186,7 @@ public class Auto118_1 extends AutoMethods {
 
             case 33: //5 back
                 set_drive_power(-1.0);
-                if (have_encoders_reached(getNumTicks(5))) {
+                if (!have_encoders_reached(getNumTicks(5))) {
                     set_drive_power(0);
                     opState++;
                 }
@@ -213,14 +219,16 @@ public class Auto118_1 extends AutoMethods {
 
             case 37: //72 forward
                 set_drive_power(1.0);
-                if (have_encoders_reached(getNumTicks(38))) {
+                if (!have_encoders_reached(getNumTicks(38))) {
                     set_drive_power(0);
                     opState++;
                 }
                 break;
             }
+            */
 
 
+        }
     }
 
 
