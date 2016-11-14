@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 @Autonomous(name="Auto118_1", group="Auto118")
 
 public class Auto118_1 extends AutoMethods {
+
     int opState = 1;
     public char side;
     @Override
