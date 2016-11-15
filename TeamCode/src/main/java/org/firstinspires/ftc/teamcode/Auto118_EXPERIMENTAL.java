@@ -11,8 +11,10 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 
 public class Auto118_EXPERIMENTAL extends AutoMethods {
 
-    int opState = 1;
-    public char side;
+    int opState = 0;
+    char side;
+    char team = 'b';
+    char color;
     @Override
     public void init() {
         super.init();
@@ -31,7 +33,11 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
         }
         switch (opState) {
 
-
+            case 0:
+                reset_drive_encoders();
+                if (have_encoders_reset()){
+                    opState ++;
+                }
             case 1: //drive forward 38 inches
                 set_drive_power(1.0);
                 if (have_encoders_reached(getNumTicks(38))) {
@@ -75,7 +81,18 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
 
                 break;
 
-            case 7: //check color
+            case 7: //check color, pusher down
+                color = getColor();
+                if (color == 'B') {
+
+                    side = 'r';
+
+                }
+                else
+                {
+                    side = 'l';
+                }
+                opState ++;
                 break;
 
             case 9: //pushers down
@@ -153,6 +170,17 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
                 break;
 
             case 23: //check color
+                color = getColor();
+                if (color == 'B') {
+
+                    side = 'r';
+
+                }
+                else
+                {
+                    side = 'l';
+                }
+                opState ++;
                 break;
 
             case 25: //pusher down
@@ -177,6 +205,7 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
 
             case 31: //pushers up
                 pusher_toggle(side);
+                opState ++;
                 break;
 
             case 33: //5 back
