@@ -39,7 +39,7 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
                     opState ++;
                 }
             case 1: //drive forward 38 inches
-                set_drive_power(1.0);
+                set_drive_power(-1.0);
                 if (have_encoders_reached(getNumTicks(38))) {
                     set_drive_power(0);
                     opState++;
@@ -73,7 +73,7 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
                 break;
 
             case 5: // 46 forward
-                set_drive_power(1.0);
+                set_drive_power(-1.0);
                 if (have_encoders_reached(getNumTicks(46))) {
                     set_drive_power(0);
                     opState++;
@@ -100,9 +100,21 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
                 break;
 
             case 11: //some forward
+                set_drive_power(-1.0);
+                if (have_encoders_reached(getNumTicks(5))) {
+                    set_drive_power(0);
+                    opState++;
+                }
+
                 break;
 
             case 13: //some back
+                set_drive_power(1.0);
+                if (have_encoders_reached(getNumTicks(5))) {
+                    set_drive_power(0);
+                    opState++;
+                }
+
                 break;
 
             case 15: //pushers up
@@ -136,7 +148,7 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
                 break;
 
             case 19: //38 forward
-                set_drive_power(1.0);
+                set_drive_power(-1.0);
                 if (have_encoders_reached(getNumTicks(38))) {
                     set_drive_power(0);
                     opState++;
@@ -188,16 +200,16 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
                 break;
 
             case 27: //some forward
-                set_drive_power(1.0);
-                if (have_encoders_reached(getNumTicks(2))) {
+                set_drive_power(-1.0);
+                if (have_encoders_reached(getNumTicks(5))) {
                     set_drive_power(0);
                     opState++;
                 }
                 break;
 
             case 29: //some back
-                set_drive_power(-1.0);
-                if (have_encoders_reached(getNumTicks(2))) {
+                set_drive_power(1.0);
+                if (have_encoders_reached(getNumTicks(5))) {
                     set_drive_power(0);
                     opState++;
                 }
@@ -242,8 +254,8 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
                 break;
 
             case 37: //72 forward
-                set_drive_power(1.0);
-                if (have_encoders_reached(getNumTicks(38))) {
+                set_drive_power(-1.0);
+                if (have_encoders_reached(getNumTicks(78))) {
                     set_drive_power(0);
                     opState++;
                 }
