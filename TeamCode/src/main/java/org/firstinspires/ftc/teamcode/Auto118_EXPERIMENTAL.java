@@ -12,13 +12,11 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 public class Auto118_EXPERIMENTAL extends AutoMethods {
 
     int opState = 0;
-    char side;
-    char team = 'b';
-    char color;
     @Override
     public void init() {
         super.init();
     }
+
     public double[] drivePower = new double[2];
 
 
@@ -33,11 +31,8 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
         }
         switch (opState) {
 
-            case 0:
-                reset_drive_encoders();
-                if (have_encoders_reset()){
-                    opState ++;
-                }
+            case -1: //Launch first preloaded ball
+
             case 1: //drive forward 38 inches
                 set_drive_power(-1.0);
                 if (have_encoders_reached(getNumTicks(38))) {

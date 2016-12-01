@@ -34,11 +34,8 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     static ColorSensor rgbSensor;
     static DeviceInterfaceModule cdim;
 
-    static double right;
-    static double left;
     static boolean precisionMode = false;
-    static double right_scaled;
-    static double left_scaled;
+
 
     static boolean lPusherDown = false;
     static boolean rPusherDown = false;
@@ -48,19 +45,58 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     static final double lServoUp = .15;
     static final double rServoUp = .80;
     static int scooperIndex = 2; // Start With Scoop Up Ready to Deploy
-    static final double[] scooperPos = {1,0.5,0};
+
 
     @Override
     public void loop() {
         //Meant to be overridden
     }
 
+    /**
+     *  This init method has fail-safes and should be used in all programs to ensure that the hardware configuration is the same
+     */
+    @Override
+    public void init() {
 
-    public static double scooperPos(int scooperIndex)
-    {
-        scooperIndex = Range.clip(scooperIndex,0,2);
-        return scooperPos[scooperIndex];
+        r$rear = hardwareMap.dcMotor.get("rrear");
+        r$front = hardwareMap.dcMotor.get("rfore");
+        l$front = hardwareMap.dcMotor.get("lfore");
+        l$rear = hardwareMap.dcMotor.get("lrear");
+
+        r$rear.setDirection(DcMotor.Direction.REVERSE);
+        r$front.setDirection(DcMotor.Direction.REVERSE);
+
+        //Try-Catch statements to ensure that
+
+        try {
+            lPusher = hardwareMap.servo.get("lPusher");
+            lPusher.setPosition(lServoUp);
+        }
+        catch (Exception e)    {
+            lpusher = null;
+        }
+
+        try {
+            rPusher = hardwareMap.servo.get("rPusher");
+            rPusher.setPosition(rServoUp);
+        }
+        catch (Exception e) {
+            rPusher = null;
+        }
+
+        try {
+            scooper = hardwareMap.servo.get("scooper");
+            scooper.setPosition(scooperPos(scooperIndex));
+        }
+        catch (Exception e) {
+            scooper = null;
+        }
     }
+
+    /**
+     * Sleep method for debounce and responsiveness purposes
+     * @param nanos - Time to sleep in nanoseconds
+     */
     public static void busySleep(long nanos)
     {
         long elapsed;
@@ -70,35 +106,13 @@ public abstract class HardwareMethods118_1617 extends OpMode {
         } while (elapsed < nanos);
     }
 
-    @Override
-    public void init() {
-        r$rear = hardwareMap.dcMotor.get("rrear");
-        r$front = hardwareMap.dcMotor.get("rfore");
-
-        l$front = hardwareMap.dcMotor.get("lfore");
-        l$rear = hardwareMap.dcMotor.get("lrear");
-
-        lPusher = hardwareMap.servo.get("lPusher");
-        rPusher = hardwareMap.servo.get("rPusher");
-        scooper = hardwareMap.servo.get("scooper");
-
-        scooper.setPosition(scooperPos(scooperIndex));
-
-        lPusher.setPosition(lServoUp);
-        rPusher.setPosition(rServoUp);
-
-        r$rear.setDirection(DcMotor.Direction.REVERSE);
-        r$front.setDirection(DcMotor.Direction.REVERSE);
-    }
-
-      void printTelemetry(){
-         telemetry.addData("RMotor Power", right_scaled);
-         telemetry.addData("LMotor power", left_scaled);
-         telemetry.addData("LServo",lPusherDown);
-         telemetry.addData("RServo", rPusherDown);
-         telemetry.addData("Scoop",scooperPos(scooperIndex));
-     }
-     static double scaleMotor(double num, boolean precise) {
+    /** Scales the raw joystick input into granular speeds to improve driving control
+     *
+     * @param num - the joystick value from the controller
+     * @param precise - whether or not the button for precision mode is pressed
+     * @return the scaled granular motor power
+     */
+    static double scaleMotor(double num, boolean precise) {
         if (num == 0.0)
             return 0.0;
         double[] scaleArray = {0.5, 0.75, 1.0};
@@ -118,5 +132,22 @@ public abstract class HardwareMethods118_1617 extends OpMode {
         return scaled;
     }
 
+    static final double[] scooperPos = {1,0.5,0};
+    public static double scooperPos(int scooperIndex)
+    {
+        scooperIndex = Range.clip(scooperIndex,0,2);
+        return scooperPos[scooperIndex];
+    }
+
+
+
+
+    void printTelemetry(){
+        telemetry.addData("RMotor Power", right_scaled);
+        telemetry.addData("LMotor power", left_scaled);
+        telemetry.addData("LServo",lPusherDown);
+        telemetry.addData("RServo", rPusherDown);
+        telemetry.addData("Scoop",scooperPos(scooperIndex));
+    }
 
 }

@@ -200,6 +200,7 @@ public abstract class AutoMethods extends HardwareMethods118_1617 {
     private static final int LED_CHANNEL = 1; //The port the color sensor is plugged into. Change if necessary
 
     public void turn_LED_On() {
+
         cdim.setDigitalChannelState(LED_CHANNEL, true);
     }
 

@@ -21,6 +21,7 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
 
         drive(gamepad1.right_bumper);
 
+        //Left Button Pusher
         if (gamepad1.a){
             lPusherDown ^= true;
             if(lPusherDown){
@@ -32,6 +33,7 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
             busySleep(500);
         }
 
+        //Right Button Pusher
         if(gamepad1.b){
             rPusherDown ^= true;
             if(rPusherDown){
@@ -43,26 +45,25 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
             busySleep(500);
         }
 
+        /*
         if(gamepad1.y){
             scooperIndex ++;
             scooper.setPosition(scooperPos(scooperIndex));
             busySleep(500);
         }
+
+        //
         if(gamepad1.x){
             scooperIndex --;
             scooper.setPosition(scooperPos(scooperIndex));
             busySleep(500);
         }
-
-//        r$front.setPower(right_scaled);
-//        r$rear.setPower(right_scaled);
-//
-//        l$front.setPower(left_scaled);
-//        l$rear.setPower(left_scaled);
-
+        */
         printTelemetry();
     }
 
+    static double right_scaled;
+    static double left_scaled;
     static void drive(boolean precise) {
         right_scaled = scaleMotor(right,precise);
         left_scaled = scaleMotor(left,precise);
