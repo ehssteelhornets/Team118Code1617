@@ -77,21 +77,12 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
                 break;
 
             case 7: //check color, pusher down
-                color = getColor();
-                if (color == 'B') {
 
-                    side = 'r';
-
-                }
-                else
-                {
-                    side = 'l';
-                }
                 opState ++;
                 break;
 
             case 9: //pushers down
-                pusher_toggle(side);
+                opState ++;
                 break;
 
             case 11: //some forward
@@ -113,7 +104,7 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
                 break;
 
             case 15: //pushers up
-                pusher_toggle(side);
+                opState ++;
                 break;
 
             case 17: //turn right
@@ -177,21 +168,12 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
                 break;
 
             case 23: //check color
-                color = getColor();
-                if (color == 'B') {
 
-                    side = 'r';
-
-                }
-                else
-                {
-                    side = 'l';
-                }
                 opState ++;
                 break;
 
             case 25: //pusher down
-                pusher_toggle(side);
+                opState ++;
                 break;
 
             case 27: //some forward
@@ -211,7 +193,6 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
                 break;
 
             case 31: //pushers up
-                pusher_toggle(side);
                 opState ++;
                 break;
 

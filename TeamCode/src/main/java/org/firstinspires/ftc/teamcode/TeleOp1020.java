@@ -45,6 +45,33 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
             busySleep(500);
         }
 
+        if(gamepad1.right_trigger > 0.1) {
+            shooter.setPower(1);
+        }
+        else {
+            shooter.setPower(0);
+        }
+
+        if(gamepad1.left_trigger > 0.1) {
+            elevator.setPower(1);
+        }
+        else {
+            elevator.setPower(0);
+        }
+
+        if(gamepad1.left_bumper) {
+            queue.setPosition(.4);
+        }
+        else {
+            queue.setPosition(1);
+        }
+
+        if(gamepad1.y) {
+            intake.setPower(1);
+        }
+        else {
+            intake.setPower(0);
+        }
         /*
         if(gamepad1.y){
             scooperIndex ++;

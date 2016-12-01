@@ -27,6 +27,14 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     static DcMotor r$front;
     static DcMotor l$front;
 
+    static DcMotor shooter;
+    static DcMotor intake;
+    static DcMotor elevator;
+    static Servo queue;
+
+    static double right;
+    static double left;
+
     static Servo lPusher;
     static Servo rPusher;
     static Servo scooper;
@@ -73,7 +81,7 @@ public abstract class HardwareMethods118_1617 extends OpMode {
             lPusher.setPosition(lServoUp);
         }
         catch (Exception e)    {
-            lpusher = null;
+            lPusher = null;
         }
 
         try {
@@ -84,13 +92,7 @@ public abstract class HardwareMethods118_1617 extends OpMode {
             rPusher = null;
         }
 
-        try {
-            scooper = hardwareMap.servo.get("scooper");
-            scooper.setPosition(scooperPos(scooperIndex));
-        }
-        catch (Exception e) {
-            scooper = null;
-        }
+
     }
 
     /**
@@ -143,8 +145,8 @@ public abstract class HardwareMethods118_1617 extends OpMode {
 
 
     void printTelemetry(){
-        telemetry.addData("RMotor Power", right_scaled);
-        telemetry.addData("LMotor power", left_scaled);
+        telemetry.addData("RMotor Power", TeleOp1020.right_scaled);
+        telemetry.addData("LMotor power", TeleOp1020.left_scaled);
         telemetry.addData("LServo",lPusherDown);
         telemetry.addData("RServo", rPusherDown);
         telemetry.addData("Scoop",scooperPos(scooperIndex));
