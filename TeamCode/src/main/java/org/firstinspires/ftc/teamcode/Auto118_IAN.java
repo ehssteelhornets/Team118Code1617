@@ -40,7 +40,7 @@ public class Auto118_IAN extends AutoMethods {
 
             case 3:
                 set_drive_power(-1.0);
-                if (have_encoders_reached(getNumTicks(78))) {
+                if (have_encoders_reached(getNumTicks(5))) {
                     set_drive_power(0);
                     opState++;
                 }

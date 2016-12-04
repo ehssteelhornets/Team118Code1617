@@ -99,6 +99,7 @@ public abstract class HardwareMethods118_1617 extends OpMode {
 
         try {
             queue = hardwareMap.servo.get("Queue");
+            queue.setPosition(0);
         }
         catch (Exception e) {
             queue = null;
@@ -178,6 +179,9 @@ public abstract class HardwareMethods118_1617 extends OpMode {
         telemetry.addData("LServo",lPusherDown);
         telemetry.addData("RServo", rPusherDown);
         telemetry.addData("Scoop",scooperPos(scooperIndex));
+        telemetry.addData("Launcher power", shooter.getPower());
+        telemetry.addData("Elevator power", elevator.getPower());
+        telemetry.addData("Intake power", intake.getPower());
     }
 
 }

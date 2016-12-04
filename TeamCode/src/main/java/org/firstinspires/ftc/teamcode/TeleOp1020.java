@@ -33,7 +33,7 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
 
         //Left Button Pusher
         if(lPusher != null) {
-            if (gamepad1.left_bumper) {
+            if (gamepad1.right_bumper) {
                 lPusherDown ^= true;
                 if (lPusherDown) {
                     lPusher.setPosition(lServoDown);
@@ -46,7 +46,7 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
 
         //Right Button Pusher
         if(rPusher != null){
-            if (gamepad1.right_bumper) {
+            if (gamepad1.left_bumper) {
                 rPusherDown ^= true;
                 if (rPusherDown) {
                     rPusher.setPosition(rServoDown);
@@ -66,7 +66,7 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
   */
 
         if(shooter != null) {
-            if (gamepad1.right_trigger > 0) {
+            if (gamepad2.right_trigger != 0) {
                 shooter.setPower(1);
             } else {
                 shooter.setPower(0);
@@ -74,23 +74,30 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
         }
 
         if(elevator != null) {
-            if (gamepad1.left_trigger > 0) {
-                elevator.setPower(1);
+            if (gamepad2.left_trigger != 0) {
+                if(gamepad2.y)
+                    elevator.setPower(-1);
+                else
+                    elevator.setPower(1);
             } else {
                 elevator.setPower(0);
             }
         }
         if(intake != null) {
-            if (gamepad1.left_trigger > 0) {
-                intake.setPower(1);
+            if (gamepad2.left_trigger != 0) {
+                if(gamepad2.y)
+                    intake.setPower(-1);
+                else
+                    intake.setPower(1);
             } else {
                 intake.setPower(0);
             }
         }
 
         if(queue != null) {
-            if (gamepad1.left_bumper) {
+            if (gamepad2.left_bumper) {
                 queue.setPosition(0.5);
+
             } else {
                 queue.setPosition(0);
             }

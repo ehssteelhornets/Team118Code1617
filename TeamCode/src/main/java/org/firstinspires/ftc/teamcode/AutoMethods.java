@@ -93,7 +93,7 @@ public abstract class AutoMethods extends HardwareMethods118_1617 {
      */
     public static int getNumTicks(int distance) {
 
-        double rotations = distance / (Math.PI * wheelSize); //distance divided by the circumference of the wheel
+        double rotations = distance / (Math.PI * Math.pow((wheelSize/2), 2)); //distance divided by the circumference of the wheel
         return (int) (enc_CPR * rotations); //Encoder ticks per revolution times by the number of rotations
     }
 
