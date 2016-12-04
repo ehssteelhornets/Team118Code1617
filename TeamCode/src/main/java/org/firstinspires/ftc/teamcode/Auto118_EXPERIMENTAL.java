@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 
 public class Auto118_EXPERIMENTAL extends AutoMethods {
 
-    int opState = 0;
+    int opState = 1;
     @Override
     public void init() {
         super.init();
@@ -19,225 +19,43 @@ public class Auto118_EXPERIMENTAL extends AutoMethods {
 
     public double[] drivePower = new double[2];
 
+    public int k;
 
     @Override
     public void loop() {
- 
+
         if (opState % 2 == 0) {
             reset_drive_encoders();
-            if (have_encoders_reset()){
-                opState ++;
+            if (have_encoders_reset()) {
+                opState++;
             }
         }
         switch (opState) {
 
-            case -1: //Launch first preloaded ball
+            case 1: //launch 2 balls
+                shooter.setPower(1);
+                busySleep(1800);
+                shooter.setPower(0);
+                queue.setPosition(0);
+                shooter.setPower(1);
+                busySleep(1800);
+                shooter.setPower(0);
+                opState++;
 
-            case 1: //drive forward 38 inches
-                set_drive_power(-1.0);
-                if (have_encoders_reached(getNumTicks(38))) {
-                    set_drive_power(0);
-                    opState++;
-                }
+            case 3:
+                busySleep(10000);
 
-                break;
-
-            case 3: //turn left
-
-                int degrees = 90 % 360;
-                if (degrees > 180) {
-
-                    drivePower[0] = 1.0;
-                    drivePower[1] = -1.0;
-
-                } else {
-
-                    drivePower[0] = -1.0;
-                    drivePower[1] = 1.0;
-
-                }
-
-                int ticks = get_ticks_degrees(degrees);
-                set_drive_power(drivePower[0], drivePower[1]);
-                if (have_encoders_reached(ticks)) {
-
-                    set_drive_power(0);
-                    opState ++;
-
-                }
-                break;
-
-            case 5: // 46 forward
-                set_drive_power(-1.0);
-                if (have_encoders_reached(getNumTicks(46))) {
-                    set_drive_power(0);
-                    opState++;
-                }
-
-                break;
-
-            case 7: //check color, pusher down
-
-                opState ++;
-                break;
-
-            case 9: //pushers down
-                opState ++;
-                break;
-
-            case 11: //some forward
-                set_drive_power(-1.0);
-                if (have_encoders_reached(getNumTicks(5))) {
-                    set_drive_power(0);
-                    opState++;
-                }
-
-                break;
-
-            case 13: //some back
-                set_drive_power(1.0);
-                if (have_encoders_reached(getNumTicks(5))) {
-                    set_drive_power(0);
-                    opState++;
-                }
-
-                break;
-
-            case 15: //pushers up
-                opState ++;
-                break;
-
-            case 17: //turn right
-                reset_drive_encoders();
-                degrees = 270;
-
-                if (degrees > 180) {
-
-                    drivePower[0] = 1.0;
-                    drivePower[1] = -1.0;
-
-                } else {
-
-                    drivePower[0] = -1.0;
-                    drivePower[1] = 1.0;
-
-                }
-
-                ticks = get_ticks_degrees(degrees);
-                set_drive_power(drivePower[0], drivePower[1]);
-                if (have_encoders_reached(ticks)) {
-
-                    set_drive_power(0);
-                    opState ++;
-
-                }
-                break;
-
-            case 19: //38 forward
-                set_drive_power(-1.0);
-                if (have_encoders_reached(getNumTicks(38))) {
-                    set_drive_power(0);
-                    opState++;
-                }
-
-                break;
-
-            case 21: //turn left
-
-                degrees = 90 % 360;
-                if (degrees > 180) {
-
-                    drivePower[0] = 1.0;
-                    drivePower[1] = -1.0;
-
-                } else {
-
-                    drivePower[0] = -1.0;
-                    drivePower[1] = 1.0;
-
-                }
-
-                ticks = get_ticks_degrees(degrees);
-                set_drive_power(drivePower[0], drivePower[1]);
-                if (have_encoders_reached(ticks)) {
-
-                    set_drive_power(0);
-                    opState ++;
-
-                }
-                break;
-
-            case 23: //check color
-
-                opState ++;
-                break;
-
-            case 25: //pusher down
-                opState ++;
-                break;
-
-            case 27: //some forward
-                set_drive_power(-1.0);
-                if (have_encoders_reached(getNumTicks(5))) {
-                    set_drive_power(0);
-                    opState++;
-                }
-                break;
-
-            case 29: //some back
-                set_drive_power(1.0);
-                if (have_encoders_reached(getNumTicks(5))) {
-                    set_drive_power(0);
-                    opState++;
-                }
-                break;
-
-            case 31: //pushers up
-                opState ++;
-                break;
-
-            case 33: //5 back
-                set_drive_power(-1.0);
-                if (have_encoders_reached(getNumTicks(5))) {
-                    set_drive_power(0);
-                    opState++;
-                }
-                break;
-
-            case 35: //turn left
-
-                degrees = 90 % 360;
-                if (degrees > 180) {
-
-                    drivePower[0] = 1.0;
-                    drivePower[1] = -1.0;
-
-                } else {
-
-                    drivePower[0] = -1.0;
-                    drivePower[1] = 1.0;
-
-                }
-
-                ticks = get_ticks_degrees(degrees);
-                set_drive_power(drivePower[0], drivePower[1]);
-                if (have_encoders_reached(ticks)) {
-
-                    set_drive_power(0);
-                    opState ++;
-
-                }
-                break;
-
-            case 37: //72 forward
+            case 5:
                 set_drive_power(-1.0);
                 if (have_encoders_reached(getNumTicks(78))) {
                     set_drive_power(0);
                     opState++;
                 }
                 break;
+            
+            case 7:
+                set_drive_power(0);
+                break;
         }
-
-
     }
 }

@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="TeleOpEXP", group="TeleOp118")
 
 public class TeleOpEXP extends HardwareMethods118_1617 {
-
+/*
     @Override
     public void init() {
         super.init();
@@ -76,6 +76,6 @@ public class TeleOpEXP extends HardwareMethods118_1617 {
         l$rear.setPower(left_scaled);
     }
 
-
+*/
 
 }

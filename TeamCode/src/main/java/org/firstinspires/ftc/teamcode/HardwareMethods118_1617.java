@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.ftccommon.DbgLog;
@@ -49,9 +50,9 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     static boolean rPusherDown = false;
 
     static final double lServoDown = .80;
-    static final double rServoDown= .15;
+    static final double rServoDown= .80;
     static final double lServoUp = .15;
-    static final double rServoUp = .80;
+    static final double rServoUp = .15;
     static int scooperIndex = 2; // Start With Scoop Up Ready to Deploy
 
 
@@ -74,7 +75,34 @@ public abstract class HardwareMethods118_1617 extends OpMode {
         r$rear.setDirection(DcMotor.Direction.REVERSE);
         r$front.setDirection(DcMotor.Direction.REVERSE);
 
-        //Try-Catch statements to ensure that
+        try {
+            elevator = hardwareMap.dcMotor.get("elevator");
+        }
+        catch (Exception e) {
+            elevator = null;
+        }
+
+        try {
+            shooter = hardwareMap.dcMotor.get("Shooter");
+        }
+        catch (Exception e) {
+            shooter = null;
+        }
+
+        try {
+            intake = hardwareMap.dcMotor.get("intake");
+            intake.setDirection(DcMotor.Direction.REVERSE);
+        }
+        catch (Exception e) {
+            intake = null;
+        }
+
+        try {
+            queue = hardwareMap.servo.get("Queue");
+        }
+        catch (Exception e) {
+            queue = null;
+        }
 
         try {
             lPusher = hardwareMap.servo.get("lPusher");

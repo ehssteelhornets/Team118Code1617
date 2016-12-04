@@ -36,7 +36,7 @@ public class Auto118_IAN extends AutoMethods {
         }
         switch (opState) {
             case 1:
-                busySleep(1000000);
+                busySleep(10000);
 
             case 3:
                 set_drive_power(-1.0);

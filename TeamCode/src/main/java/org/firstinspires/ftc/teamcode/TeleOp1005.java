@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="TeleOp1005", group="TeleOp118")
 public class TeleOp1005 extends HardwareMethods118_1617 {
-
+/*
 
 
     public static void busySleep(long nanos)
@@ -140,4 +140,5 @@ public class TeleOp1005 extends HardwareMethods118_1617 {
 
         return scaled;
     }
+    */
 }
