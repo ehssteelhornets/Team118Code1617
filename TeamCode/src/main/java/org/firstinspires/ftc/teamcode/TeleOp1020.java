@@ -29,7 +29,10 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
         boolean precisionMode = false;
         if(gamepad1.left_trigger != 0)
             precisionMode = true;
-        drive(precisionMode);
+        boolean reverseMode = false;
+        if(gamepad1.right_trigger != 0)
+            reverseMode = true;
+        drive(precisionMode, reverseMode);
 
         //Left Button Pusher
         if(lPusher != null) {
@@ -110,9 +113,14 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
 
     static double right_scaled;
     static double left_scaled;
-    static void drive(boolean precise) {
+    static void drive(boolean precise, boolean reverse) {
         right_scaled = scaleMotor(right,precise);
         left_scaled = scaleMotor(left,precise);
+
+        if(reverse) {
+            right_scaled = -right_scaled;
+            left_scaled = -left_scaled;
+        }
 
         r$front.setPower(right_scaled);
         r$rear.setPower(right_scaled);

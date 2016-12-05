@@ -14,13 +14,15 @@ public abstract class AutoMethods extends HardwareMethods118_1617 {
     public void start() {
     }
 
-    public void DriveForward(int speed, int distance) {
+    public void DriveForward(double speed, int distance) {
         reset_drive_encoders();
-        if (have_encoders_reset()) {
-            if (!have_encoders_reached(getNumTicks(distance))) {
-                set_drive_power(speed / 100);
+        while(!have_encoders_reset()) {
+            reset_drive_encoders();
+        }
 
-            }
+        int ticks = getNumTicks(distance);
+        while(!have_encoders_reached(ticks)) {
+            set_drive_power(speed);
         }
         set_drive_power(0);
     }
