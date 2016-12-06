@@ -40,7 +40,8 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     static Servo rPusher;
     static Servo scooper;
 
-    static ColorSensor rgbSensor;
+    static ColorSensor leftSensor;
+    static ColorSensor rightSensor;
     static DeviceInterfaceModule cdim;
 
     static boolean precisionMode = false;
@@ -121,6 +122,16 @@ public abstract class HardwareMethods118_1617 extends OpMode {
             rPusher = null;
         }
 
+        try {
+            leftSensor = hardwareMap.colorSensor.get("leftRGB");
+            rightSensor = hardwareMap.colorSensor.get("rightRGB");
+            cdim = hardwareMap.deviceInterfaceModule.get("DIM");
+        }
+        catch (Exception e) {
+            leftSensor = null;
+            rightSensor = null;
+            cdim = null;
+        }
 
     }
 

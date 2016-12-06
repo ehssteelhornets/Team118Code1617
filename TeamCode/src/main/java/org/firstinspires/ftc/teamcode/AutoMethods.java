@@ -99,6 +99,28 @@ public abstract class AutoMethods extends HardwareMethods118_1617 {
         return (int) (enc_CPR * rotations); //Encoder ticks per revolution times by the number of rotations
     }
 
+    public void pusher_toggle(char side) {
+        if (side == 'l') {
+            lPusherDown ^= true;
+            if (lPusherDown) {
+                lPusher.setPosition(lServoDown);
+            } else {
+                lPusher.setPosition(lServoUp);
+            }
+            busySleep(500);
+        }
+        else {
+
+            rPusherDown ^= true;
+            if (rPusherDown) {
+                rPusher.setPosition(rServoDown);
+            } else {
+                rPusher.setPosition(rServoUp);
+            }
+            busySleep(500);
+        }
+    }
+
     /**
      * RESET THE ENCODERS OF BOTH DRIVE MOTORS
      */
@@ -201,52 +223,22 @@ public abstract class AutoMethods extends HardwareMethods118_1617 {
 
     private static final int LED_CHANNEL = 1; //The port the color sensor is plugged into. Change if necessary
 
-    public void turn_LED_On() {
-
-        cdim.setDigitalChannelState(LED_CHANNEL, true);
+    public void turn_LEDs_On() {
+        leftSensor.enableLed(true);
+    }
+    public void turn_left_LED_on()  {
+        leftSensor.enableLed(true);
+    }
+    public void turn_right_LED_on() {
+        rightSensor.enableLed(true);
     }
 
     public void turn_LED_Off() {
         cdim.setDigitalChannelState(LED_CHANNEL, false);
     }
 
-    //Convert HSV to RGB values
-    public char getColor() {
-        char color;
-        turn_LED_On();
 
-        if (rgbSensor.red() > rgbSensor.blue()) {
-            color = 'R';
-        } else if (rgbSensor.red() < rgbSensor.blue()) {
-            color = 'B';
-        } else {
-            color = 'N';
-        }
 
-        turn_LED_Off();
-        return color;
-    }
 
-    public void pusher_toggle(char side) {
-        if (side == 'l') {
-            lPusherDown ^= true;
-            if (lPusherDown) {
-                lPusher.setPosition(lServoDown);
-            } else {
-                lPusher.setPosition(lServoUp);
-            }
-            busySleep(500);
-        }
-        else {
-
-            rPusherDown ^= true;
-            if (rPusherDown) {
-                rPusher.setPosition(rServoDown);
-            } else {
-                rPusher.setPosition(rServoUp);
-            }
-            busySleep(500);
-        }
-    }
 }
 
