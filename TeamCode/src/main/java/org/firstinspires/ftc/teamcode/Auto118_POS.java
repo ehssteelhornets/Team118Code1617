@@ -34,7 +34,7 @@ public class Auto118_POS extends AutoMethods {
             shooter.setPower(1);
             telemetry.addData("shoot 2", 2);
             printTelemetry();
-            busySleep(180000000);
+            busySleep(1800000000);
             shooter.setPower(0);
             busySleep(80000000);
             telemetry.addData("Checkpoint 1", 1);
