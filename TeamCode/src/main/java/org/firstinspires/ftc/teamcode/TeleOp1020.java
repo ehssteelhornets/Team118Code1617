@@ -36,29 +36,31 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
 
         //Left Button Pusher
         if(lPusher != null) {
-            if (gamepad1.right_bumper) {
-                lPusherDown ^= true;
-                if (lPusherDown) {
+            if (gamepad1.left_bumper) {
+               // lPusherDown ^= true;
+               // if (lPusherDown) {
                     lPusher.setPosition(lServoDown);
-                } else {
+                }
+            else {
                     lPusher.setPosition(lServoUp);
                 }
                 busySleep(500);
             }
-        }
+
 
         //Right Button Pusher
         if(rPusher != null){
-            if (gamepad1.left_bumper) {
-                rPusherDown ^= true;
-                if (rPusherDown) {
+            if (gamepad1.right_bumper) {
+               // rPusherDown ^= true;
+               // if (rPusherDown) {
                     rPusher.setPosition(rServoDown);
-                } else {
+                }
+            else {
                     rPusher.setPosition(rServoUp);
                 }
                 busySleep(500);
             }
-        }
+
 
 /**
  *  Controller 2
@@ -69,10 +71,20 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
   */
 
         if(shooter != null) {
-            if (gamepad2.right_trigger != 0) {
-                shooter.setPower(1);
-            } else {
-                shooter.setPower(0);
+            if (gamepad2.a)
+            {
+                if (gamepad2.right_trigger != 0) {
+                    shooter.setPower(-.1);
+                } else {
+                    shooter.setPower(0);
+                }
+            }
+            else {
+                if (gamepad2.right_trigger != 0) {
+                    shooter.setPower(1);
+                } else {
+                    shooter.setPower(0);
+                }
             }
         }
 
@@ -118,8 +130,9 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
         left_scaled = scaleMotor(left,precise);
 
         if(reverse) {
-            right_scaled = -right_scaled;
-            left_scaled = -left_scaled;
+            double temp = right_scaled;
+            right_scaled = -left_scaled;
+            left_scaled = -temp;
         }
 
         r$front.setPower(right_scaled);
