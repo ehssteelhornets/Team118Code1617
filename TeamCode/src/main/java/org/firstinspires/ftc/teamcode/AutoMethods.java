@@ -168,7 +168,20 @@ public abstract class AutoMethods extends HardwareMethods118_1617 {
         l$rear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
+    public int getPos() {
 
+    return (r$front.getCurrentPosition());
+
+    }
+    public void SetTargetPosition(int target)
+    {
+        r$front.setTargetPosition(r$front.getCurrentPosition() + target);
+        r$rear.setTargetPosition(r$rear.getCurrentPosition() + target);
+
+        l$front.setTargetPosition(l$front.getCurrentPosition() + target);
+        l$rear.setTargetPosition(l$rear.getCurrentPosition() + target);
+
+    }
     /**
      * HAVE THE ENCODERS REACHED THE REQUIRED NUMBER OF TICKS
      *
