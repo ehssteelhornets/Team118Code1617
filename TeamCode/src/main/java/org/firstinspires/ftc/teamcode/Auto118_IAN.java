@@ -2,18 +2,18 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
 @Autonomous(name="Auto118_IAN", group="Auto118")
-
+@Disabled
 /**
  * Created by Steel Hornets on 11/12/2016.
  */
 
-public class Auto118_IAN extends AutoMethods {
+public class Auto118_IAN {
+}
+    /*
     int opState = 1;
     public char side;
 
@@ -229,9 +229,10 @@ public class Auto118_IAN extends AutoMethods {
                 }
                 break;
             }
-            */
+
 
 
         }
     }
 }
+*/

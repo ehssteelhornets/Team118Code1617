@@ -98,6 +98,7 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
         robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         idle();
 
+
         robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 

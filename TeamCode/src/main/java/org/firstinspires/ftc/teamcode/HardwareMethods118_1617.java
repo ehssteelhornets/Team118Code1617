@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.ftccommon.DbgLog;
@@ -43,6 +45,8 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     static ColorSensor leftSensor;
     static ColorSensor rightSensor;
     static DeviceInterfaceModule cdim;
+    static DigitalChannel leftSensorOn;
+    static DigitalChannel rightSensorOn;
 
     static boolean precisionMode = false;
 
@@ -58,7 +62,7 @@ public abstract class HardwareMethods118_1617 extends OpMode {
 
 
     @Override
-    public void loop() {
+    public void loop()  {
         //Meant to be overridden
     }
 
@@ -133,19 +137,26 @@ public abstract class HardwareMethods118_1617 extends OpMode {
             cdim = null;
         }
 
+        try{
+            leftSensorOn.setMode(DigitalChannelController.Mode.OUTPUT);
+            rightSensorOn.setMode(DigitalChannelController.Mode.OUTPUT);
+            leftSensorOn.setState(false);
+            rightSensorOn.setState(false);
+        }
+        catch(Exception e) {
+
+        }
+
     }
 
     /**
      * Sleep method for debounce and responsiveness purposes
      * @param nanos - Time to sleep in nanoseconds
      */
-    public static void busySleep(long nanos)
+    public static void busySleep(long milis)
     {
-        long elapsed;
-        final long startTime = System.nanoTime();
-        do {
-            elapsed = System.nanoTime() - startTime;
-        } while (elapsed < nanos);
+     //Need to inplement
+
     }
 
     /** Scales the raw joystick input into granular speeds to improve driving control
@@ -174,14 +185,6 @@ public abstract class HardwareMethods118_1617 extends OpMode {
         return scaled;
     }
 
-    static final double[] scooperPos = {1,0.5,0};
-    public static double scooperPos(int scooperIndex)
-    {
-        scooperIndex = Range.clip(scooperIndex,0,2);
-        return scooperPos[scooperIndex];
-    }
-
-
 
 
     void printTelemetry(){
@@ -189,7 +192,6 @@ public abstract class HardwareMethods118_1617 extends OpMode {
         telemetry.addData("LMotor power", TeleOp1020.left_scaled);
         telemetry.addData("LServo",lPusherDown);
         telemetry.addData("RServo", rPusherDown);
-        telemetry.addData("Scoop",scooperPos(scooperIndex));
         telemetry.addData("Launcher power", shooter.getPower());
         telemetry.addData("Elevator power", elevator.getPower());
         telemetry.addData("Intake power", intake.getPower());

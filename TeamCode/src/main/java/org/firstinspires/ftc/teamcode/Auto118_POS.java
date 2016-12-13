@@ -1,61 +1,48 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-
-
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous(name="Auto118_POS", group="Auto118")
 
-public class Auto118_POS extends AutoMethods {
-
-    @Override
-    public void init() {
-        super.init();
-    }
+public class Auto118_POS extends LinearOpMode {
+    HardwareBot robot = new HardwareBot();
 
     int opState = 1;
     @Override
-    public void loop() {
-        telemetry.addData(""+opState,0);
-        if (opState == 1)   //Launch 2 balls - Works. Don't touch.
-        {
-            shooter.setPower(1);
-            telemetry.addData("shoot 1", 1);
-            printTelemetry();
-            busySleep(1800000000);
-            shooter.setPower(0);
-            queue.setPosition(.5);
-            busySleep(800000000);
-            queue.setPosition(0);
+    public void runOpMode() throws InterruptedException{
+        robot.init(hardwareMap);
+        robot.RunToPosition();
+        waitForStart();
+        while(opModeIsActive()) {
+            if (opState == 1)   //Launch 2 balls - Works. Don't touch.
+            {
+                robot.shooter.setPower(1);
+                telemetry.addData("shoot 1", 1);
+                robot.printTelemetry(telemetry);
+                sleep(1450);
+                robot.shooter.setPower(0);
+                robot.queue.setPosition(.5);
+                sleep(1000);
+                robot.queue.setPosition(0);
+                robot.shooter.setPower(1);
+                telemetry.addData("shoot 2", 2);
+                robot.printTelemetry(telemetry);
+                sleep(1450);
+                robot.shooter.setPower(0);
 
-            shooter.setPower(1);
-            telemetry.addData("shoot 2", 2);
-            printTelemetry();
-            busySleep(1800000000);
-            shooter.setPower(0);
-            busySleep(80000000);
-            telemetry.addData("Checkpoint 1", 1);
-            int k = 0;
-            RunToPosition();
-            SetTargetPosition(getNumTicks(70));
+                sleep(10000);
+                while (!robot.have_encoders_reset()) {
+                    robot.reset_drive_encoders();
 
-            opState ++;
-        }
-        else if (opState == 2) {
-            if (getPos() == getNumTicks(70)) {
-                set_drive_power(0);
-                opState ++;
+                }
+                robot.RunToPosition();
+                idle();
+                robot.SetTargetPosition(robot.getNumTicks(70));// may need to go before run to position??
+
+                opState++;
             }
-            else {
-                set_drive_power(1);
-            }
-
+            robot.printTelemetry(telemetry);
+            telemetry.update();
         }
-
-        printTelemetry();
-
     }
 }

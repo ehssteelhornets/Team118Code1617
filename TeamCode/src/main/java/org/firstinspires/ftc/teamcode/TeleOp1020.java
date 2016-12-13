@@ -89,24 +89,21 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
         }
 
         if(elevator != null) {
-            if (gamepad2.left_trigger != 0) {
-                if(gamepad2.y)
-                    elevator.setPower(-1);
-                else
-                    elevator.setPower(1);
-            } else {
+            if (gamepad2.left_trigger != 0)
+                elevator.setPower(1);
+            else if(gamepad2.y)
+                elevator.setPower(-1);
+            else
                 elevator.setPower(0);
-            }
+
         }
         if(intake != null) {
-            if (gamepad2.left_trigger != 0) {
-                if(gamepad2.y)
-                    intake.setPower(-1);
-                else
-                    intake.setPower(1);
-            } else {
+            if (gamepad2.left_trigger != 0)
+                intake.setPower(1);
+            else if(gamepad2.y)
+                intake.setPower(-1);
+            else
                 intake.setPower(0);
-            }
         }
 
         if(queue != null) {
