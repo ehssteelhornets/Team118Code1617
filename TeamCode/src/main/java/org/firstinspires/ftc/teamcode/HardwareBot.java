@@ -33,8 +33,8 @@ public class HardwareBot  {
     public Servo lPusher;
     public Servo rPusher;
 
-    public AdafruitI2cColorSensor leftSensor;
-    public AdafruitI2cColorSensor rightSensor;
+    public ColorSensor leftSensor;
+    public ColorSensor rightSensor;
     public DeviceInterfaceModule cdim;
     public DigitalChannel leftSensorOn;
     public DigitalChannel rightSensorOn;
@@ -62,24 +62,24 @@ public class HardwareBot  {
      */
     public void init(HardwareMap hardwareMap) {
 
-        r$rear = hardwareMap.dcMotor.get("rrear");
-        r$front = hardwareMap.dcMotor.get("rfore");
-        l$front = hardwareMap.dcMotor.get("lfore");
-        l$rear = hardwareMap.dcMotor.get("lrear");
-
-
-        r$rear.setDirection(DcMotor.Direction.REVERSE);
-        r$front.setDirection(DcMotor.Direction.REVERSE);
+        try {
+            r$rear = hardwareMap.dcMotor.get("rrear");
+            r$front = hardwareMap.dcMotor.get("rfore");
+            r$rear.setDirection(DcMotor.Direction.REVERSE);
+            r$front.setDirection(DcMotor.Direction.REVERSE);
+        }
+        catch (Exception e) {
+            r$rear = null;
+            r$front = null;
+        }
 
         try {
-            leftSensorOn = hardwareMap.digitalChannel.get("cs1p");
-            rightSensorOn = hardwareMap.digitalChannel.get("cs2p");
-            //leftSensor = hardwareMap.i2cDevice.get("cs1");
-           // rightSensor = hardwareMap.colorSensor.get("cs2");
-
+            l$front = hardwareMap.dcMotor.get("lfore");
+            l$rear = hardwareMap.dcMotor.get("lrear");
         }
-        catch(Exception e){
-
+        catch (Exception e) {
+            l$front = null;
+            l$rear = null;
         }
 
         try {
@@ -129,26 +129,41 @@ public class HardwareBot  {
         }
 
         try {
-                //leftSensor = hardwareMap.colorSensor.get("leftRGB");
-                //rightSensor = hardwareMap.colorSensor.get("rightRGB");
-                cdim = hardwareMap.deviceInterfaceModule.get("DIM");
+            cdim = hardwareMap.deviceInterfaceModule.get("DIM");
         }
         catch (Exception e) {
-            leftSensor = null;
-            rightSensor = null;
             cdim = null;
         }
 
-        try{
-            leftSensorOn.setMode(DigitalChannelController.Mode.OUTPUT);
+        try {
+            leftSensorOn = hardwareMap.digitalChannel.get("cs1p");
+            leftSensor = hardwareMap.colorSensor.get("leftRGB");
+        }
+        catch(Exception e)  {
+            leftSensorOn = null;
+            leftSensor = null;
+        }
+
+        try {
+            rightSensorOn = hardwareMap.digitalChannel.get("cs2p");
+            //rightSensor = hardwareMap.colorSensor.get("rightRGB");
+        }
+        catch(Exception e)  {
+            rightSensorOn = null;
+            rightSensor = null;
+        }
+
+        try {
             rightSensorOn.setMode(DigitalChannelController.Mode.OUTPUT);
-            leftSensorOn.setState(false);
             rightSensorOn.setState(false);
         }
-        catch(Exception e) {
+        catch(Exception e) {}
 
+        try {
+            leftSensorOn.setMode(DigitalChannelController.Mode.OUTPUT);
+            leftSensorOn.setState(false);
         }
-
+        catch(Exception e)  {}
     }
 
 
@@ -208,11 +223,15 @@ public class HardwareBot  {
      * @param rightPwr - power of right motor
      */
     public void set_drive_power(double leftPwr, double rightPwr) {
-        r$front.setPower(rightPwr);
-        r$rear.setPower(rightPwr);
+        if (r$front != null && r$rear != null) {
+            r$front.setPower(rightPwr);
+            r$rear.setPower(rightPwr);
+        }
+        if (l$front != null && l$rear != null) {
 
-        l$front.setPower(leftPwr);
-        l$rear.setPower(leftPwr);
+            l$front.setPower(leftPwr);
+            l$rear.setPower(leftPwr);
+        }
     }
 
     public void turn(int degrees) {
@@ -284,24 +303,33 @@ public class HardwareBot  {
      * RESET THE ENCODERS OF BOTH DRIVE MOTORS
      */
     public void reset_drive_encoders() {
-        l$front.setPower(0.0);
-        l$rear.setPower(0.0);
+        if(l$front != null && l$rear != null) {
 
-        r$front.setPower(0.0);
-        r$rear.setPower(0.0);
+            l$front.setPower(0.0);
+            l$rear.setPower(0.0);
+        }
 
+        if(r$front != null && r$rear != null) {
+            r$front.setPower(0.0);
+            r$rear.setPower(0.0);
+        }
         reset_left_encoders();
         reset_right_encoders();
     }
 
     public void reset_left_encoders() {
-        l$front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        l$rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if(l$front != null && l$rear != null) {
+            l$front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            l$rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
     }
 
-    public void reset_right_encoders() {
-        r$front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        r$rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    public void reset_right_encoders()
+    {
+        if(r$front != null && r$rear != null) {
+            r$front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            r$rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
     }
 
 
@@ -309,38 +337,43 @@ public class HardwareBot  {
      * SET THE MOTORS TO RUN WITH ENCODERS
      */
     public void RunWithEncoders() {
-
-        r$front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        r$rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        l$front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        l$rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+        if(r$front != null && r$rear != null) {
+            r$front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            r$rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+        if(l$front != null && l$rear != null) {
+            l$front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            l$rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
     }
 
     public void RunToPosition() {
-
-        r$front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        r$rear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        l$front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        l$rear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+        if(r$front != null && r$rear != null) {
+            r$front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            r$rear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+        if(l$front != null && l$rear != null) {
+            l$front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            l$rear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
     }
 
     public void SetTargetPosition(int target)
     {
+        if(r$front != null && r$rear != null) {
+            r$front.setTargetPosition(target);
+            r$rear.setTargetPosition(target);
+        }
 
-        r$front.setTargetPosition(target);
-        r$rear.setTargetPosition(target);
-
-        l$front.setTargetPosition(target);
-        l$rear.setTargetPosition(target);
-
+        if(l$front != null && l$rear != null) {
+            l$front.setTargetPosition(target);
+            l$rear.setTargetPosition(target);
+        }
     }
     /**
      * HAVE THE ENCODERS REACHED THE REQUIRED NUMBER OF TICKS
      *
+     * @param ticks
      * @param ticks
      * @return true if the encoders have reached TICKS number of ticks
      */
