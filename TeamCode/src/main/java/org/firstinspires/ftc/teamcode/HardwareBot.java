@@ -281,20 +281,23 @@ public class HardwareBot  {
 
     public void pusher_toggle(char side) {
         if (side == 'l') {
-            lPusherDown ^= true;
-            if (lPusherDown) {
-                lPusher.setPosition(lServoDown);
-            } else {
-                lPusher.setPosition(lServoUp);
+            if (lPusher != null) {
+                lPusherDown ^= true;
+                if (lPusherDown) {
+                    lPusher.setPosition(lServoDown);
+                } else {
+                    lPusher.setPosition(lServoUp);
+                }
             }
         }
-        else {
-
-            rPusherDown ^= true;
-            if (rPusherDown) {
-                rPusher.setPosition(rServoDown);
-            } else {
-                rPusher.setPosition(rServoUp);
+        else if (side == 'r') {
+            if (rPusher != null) {
+                rPusherDown ^= true;
+                if (rPusherDown) {
+                    rPusher.setPosition(rServoDown);
+                } else {
+                    rPusher.setPosition(rServoUp);
+                }
             }
         }
     }
@@ -421,8 +424,26 @@ public class HardwareBot  {
         return r$rear.getCurrentPosition() == 0;
     }
 
+
+
     /**
      * Color Sensor Stuff
-     */
+     **/
+
+    public int getRed(ColorSensor s) {
+        if(s != null) {
+            return s.red();
+        }
+        return -1;
+    }
+
+    public int getBlue(ColorSensor s)   {
+        if(s != null)   {
+            return s.blue();
+        }
+        return -1;
+    }
+
+
 
 }
