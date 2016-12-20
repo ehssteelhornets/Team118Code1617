@@ -39,6 +39,7 @@ import android.view.View;
 import com.qualcomm.ftcrobotcontroller.R;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.LED;
@@ -54,43 +55,53 @@ public class SensorTest118 extends LinearOpMode {
 
   ColorSensor colorSensor;
   DeviceInterfaceModule cdim;
-  LED led;
+  LED led0;
+  LED led1;
   TouchSensor t;
-
+  boolean toggleOne = false;
   @Override
   public void runOpMode() throws InterruptedException {
     hardwareMap.logDevices();
 
     cdim = hardwareMap.deviceInterfaceModule.get("dim");
-    switch (device) {
-      case HITECHNIC_NXT:
-        colorSensor = hardwareMap.colorSensor.get("nxt");
-        break;
-      case ADAFRUIT:
-        colorSensor = hardwareMap.colorSensor.get("lady");
-        break;
-      case MODERN_ROBOTICS_I2C:
-        colorSensor = hardwareMap.colorSensor.get("mr");
-        break;
-    }
-    led = hardwareMap.led.get("led");
+    t = hardwareMap.touchSensor.get("t");
+    led0 = hardwareMap.led.get("led");
+    led1 = hardwareMap.led.get("led1");
+
+    float hsvValues[] = {0,0,0};
+    final float values[] = hsvValues;
+    final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(R.id.RelativeLayout);
+
+    waitForStart();
 
     while(opModeIsActive()) {
-      enableLed(gamepad1.a);
+        enableLed(t.isPressed());
+        Color.RGBToHSV((colorSensor.red() * 255) / 800, (colorSensor.green() * 255) / 800, (colorSensor.blue() * 255) / 800, hsvValues);
+
+        telemetry.addData("Clear", colorSensor.alpha());
+        telemetry.addData("Red  ", colorSensor.red());
+        telemetry.addData("Green", colorSensor.green());
+        telemetry.addData("Blue ", colorSensor.blue());
+        telemetry.addData("Hue", hsvValues[0]);
+        telemetry.update();
+        relativeLayout.post(new Runnable() {
+        public void run() {
+          relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
+        }
+        });
+        sleep(250);
     }
   }
 
-  private void enableLed(boolean value) {
-    switch (device) {
-      case HITECHNIC_NXT:
-        colorSensor.enableLed(value);
-        break;
-      case ADAFRUIT:
-        led.enable(value);
-        break;
-      case MODERN_ROBOTICS_I2C:
-        colorSensor.enableLed(value);
-        break;
+  private void enableLed(boolean b) {
+    colorSensor = hardwareMap.colorSensor.get("lady");
+    if(b) {
+      led0.enable(true);
+      led1.enable(false);
+    } else  {
+      led0.enable(false);
+      led1.enable(true);
     }
+
   }
 }
