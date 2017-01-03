@@ -13,7 +13,6 @@ public class Auto118_SensorTest extends LinearOpMode {
        robot.RunWithEncoders();
        waitForStart();
        while(opModeIsActive()) {
-              //Launch 2 balls - Works. Don't touch.
 
                robot.leftSensorOn.setState(true);
                int red1 = robot.leftSensor.red();

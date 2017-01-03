@@ -2,16 +2,19 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
-@Autonomous(name="Auto118_EXPERIMENTAL_RED", group="Auto118")
+@Autonomous(name="Auto118_WIPColorSensor", group="Auto118")
 
-public class Auto118_EXPERIMENTAL_2_RED extends LinearOpMode {
+public class Auto118_WIPColorSensor extends LinearOpMode {
+
+    public enum Color {RED, BLUE};
+
+    public Color teamColor = Color.RED;
+
     HardwareBot robot = new HardwareBot();
 
    int opState = 1;
-   final String TeamColor = "Red";
-   char whichSide;
+
    @Override
     public void runOpMode() throws InterruptedException{
        robot.init(hardwareMap);
@@ -35,46 +38,57 @@ public class Auto118_EXPERIMENTAL_2_RED extends LinearOpMode {
                robot.shooter.setPower(0);
 
                sleep(6100);
+               opState++;
+           }
 
+           if(opState == 2) {
                while (!robot.have_encoders_reset()) {
                    robot.reset_drive_encoders();
 
                }
                robot.RunWithEncoders();
-
-               telemetry.addData("Robot get Ticks", robot.getNumTicks(70));
+               final int pos1 = 30;
+               telemetry.addData("Robot get Ticks", robot.getNumTicks(pos1));
                telemetry.update();
-               while (!robot.have_encoders_reached(robot.getNumTicks(70))) {
 
+               while (!robot.have_encoders_reached(robot.getNumTicks(pos1))) {
                    robot.set_drive_power(1);
 
-                   telemetry.addData("Robot get Ticks", robot.getNumTicks(70));
+                   telemetry.addData("Robot get Ticks", robot.getNumTicks(pos1));
                    telemetry.addData("Right ticks", robot.r$front.getCurrentPosition());
                    telemetry.addData("Left ticks", robot.l$front.getCurrentPosition());
-                   telemetry.addData("Tick Goal Reached", robot.have_encoders_reached(robot.getNumTicks(70)));
+                   telemetry.addData("Tick Goal Reached", robot.have_encoders_reached(robot.getNumTicks(pos1)));
                    telemetry.update();
                }
                robot.set_drive_power(0);
+
+               doColorSensor();
+
                opState++;
            }
-
-           if(robot.getRed(robot.leftSensor) > robot.getRed(robot.rightSensor)) {
-               whichSide = 'l';
-           }
-           else if(robot.getRed(robot.rightSensor) > robot.getRed(robot.leftSensor)) {
-               whichSide = 'r';
-           }
-           else {
-               whichSide = '?';
-           }
-
-
-
-
-
            robot.printTelemetry(telemetry);
            telemetry.update();
            idle(); // Always call idle() at the bottom
        }
+    }
+
+    void doColorSensor()    {
+        int leftRed = 0;
+        int rightRed = 0;
+        robot.leftSensorOn.setState(true);
+        leftRed = robot.leftSensor.red();
+        robot.leftSensorOn.setState(false);
+        robot.rightSensorOn.setState(true);
+        rightRed = robot.rightSensor.red();
+        robot.rightSensorOn.setState(false);
+
+        if(leftRed < rightRed)  {
+            switch (teamColor)  {
+                case RED:
+                    
+            }
+
+        }
+
     }
 }

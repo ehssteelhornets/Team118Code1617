@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-@Autonomous(name="Auto118_EXPERIMENTAL", group="Auto118")
+@Autonomous(name="Auto118_Standard", group="Auto118")
 
-public class Auto118_EXPERIMENTAL extends LinearOpMode {
+public class Auto118_Standard extends LinearOpMode {
     HardwareBot robot = new HardwareBot();
 
    int opState = 1;

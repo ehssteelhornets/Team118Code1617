@@ -46,9 +46,9 @@ public class HardwareBot  {
     public boolean rPusherDown = false;
 
     public static final double lServoDown = .80;//
-    public static final double rServoDown= .80;
+    public static final double rServoDown= .30;
     public static final double lServoUp = .30;
-    public static final double rServoUp = .15;
+    public static final double rServoUp = .80;
     public static int scooperIndex = 2; // Start With Scoop Up Ready to Deploy
 
     HardwareMap hardwareMap= null;
