@@ -85,7 +85,7 @@ public class Auto118_WIPColorSensor extends LinearOpMode {
         if(leftRed < rightRed)  {
             switch (teamColor)  {
                 case RED:
-                    
+
             }
 
         }
