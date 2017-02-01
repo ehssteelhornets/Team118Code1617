@@ -51,6 +51,9 @@ public class HardwareBot  {
     public static final double rServoUp = .80;
     public static int scooperIndex = 2; // Start With Scoop Up Ready to Deploy
 
+    public static MultiplexColorSensor muxColor;
+    public static int[] ports = {0,1};
+
     HardwareMap hardwareMap= null;
 
     public HardwareBot()  {
@@ -152,7 +155,18 @@ public class HardwareBot  {
             //rightSensorOn = null;
             rightSensor = null;
         }
+
+        try {
+            int milliSeconds = 48;
+            muxColor = new MultiplexColorSensor(hardwareMap, "mux", "ada",
+                    ports, milliSeconds,
+                    MultiplexColorSensor.GAIN_16X);
+        }
+        catch(Exception e) {
+
+        }
     }
+
 
 
     /** Scales the raw joystick input into granular speeds to improve driving control
