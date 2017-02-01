@@ -36,8 +36,8 @@ public class HardwareBot  {
     public ColorSensor leftSensor;
     public ColorSensor rightSensor;
     public DeviceInterfaceModule cdim;
-    public DigitalChannel leftSensorOn;
-    public DigitalChannel rightSensorOn;
+
+    public MultiplexColorSensor csLeft, csRight;
 
     public boolean precisionMode = false;
 
@@ -136,34 +136,22 @@ public class HardwareBot  {
         }
 
         try {
-            leftSensorOn = hardwareMap.digitalChannel.get("cs1p");
+            //leftSensorOn = hardwareMap.digitalChannel.get("cs1p");
             leftSensor = hardwareMap.colorSensor.get("leftRGB");
         }
         catch(Exception e)  {
-            leftSensorOn = null;
+            //leftSensorOn = null;
             leftSensor = null;
         }
 
         try {
-            rightSensorOn = hardwareMap.digitalChannel.get("cs2p");
-            //rightSensor = hardwareMap.colorSensor.get("rightRGB");
+            //rightSensorOn = hardwareMap.digitalChannel.get("cs2p");
+            rightSensor = hardwareMap.colorSensor.get("rightRGB");
         }
-        catch(Exception e)  {
-            rightSensorOn = null;
+        catch(Exception e) {
+            //rightSensorOn = null;
             rightSensor = null;
         }
-
-        try {
-            rightSensorOn.setMode(DigitalChannelController.Mode.OUTPUT);
-            rightSensorOn.setState(false);
-        }
-        catch(Exception e) {}
-
-        try {
-            leftSensorOn.setMode(DigitalChannelController.Mode.OUTPUT);
-            leftSensorOn.setState(false);
-        }
-        catch(Exception e)  {}
     }
 
 

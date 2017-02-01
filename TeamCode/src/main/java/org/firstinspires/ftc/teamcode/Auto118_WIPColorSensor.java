@@ -61,34 +61,59 @@ public class Auto118_WIPColorSensor extends LinearOpMode {
                    telemetry.update();
                }
                robot.set_drive_power(0);
-
-               doColorSensor();
-
+               robot.reset_drive_encoders();
                opState++;
            }
+
+           if(opState==3)   {
+               robot.turn(90);
+               robot.reset_drive_encoders();
+               doColorSensor();
+               opState++;
+           }
+
            robot.printTelemetry(telemetry);
            telemetry.update();
            idle(); // Always call idle() at the bottom
        }
     }
 
-    void doColorSensor()    {
+    static final double lServoDown = .80;
+    static final double rServoDown= .30;
+    static final double lServoUp = .30;
+    static final double rServoUp = .80;
+
+    void doColorSensor() throws InterruptedException {
         int leftRed = 0;
         int rightRed = 0;
-        robot.leftSensorOn.setState(true);
         leftRed = robot.leftSensor.red();
-        robot.leftSensorOn.setState(false);
-        robot.rightSensorOn.setState(true);
         rightRed = robot.rightSensor.red();
-        robot.rightSensorOn.setState(false);
 
-        if(leftRed < rightRed)  {
-            switch (teamColor)  {
-                case RED:
-
-            }
-
+        switch (teamColor)  {
+            case RED:
+                if(leftRed > rightRed)  {
+                    robot.lPusher.setPosition(lServoDown);
+                    sleep(1000);
+                    robot.lPusher.setPosition(lServoUp);
+                }
+                else {
+                    robot.rPusher.setPosition(rServoDown);
+                    sleep(1000);
+                    robot.rPusher.setPosition(rServoUp);
+                }
+                break;
+            case BLUE:
+                if(leftRed > rightRed)  {
+                    robot.rPusher.setPosition(rServoDown);
+                    sleep(1000);
+                    robot.rPusher.setPosition(rServoUp);
+                }
+                else {
+                    robot.lPusher.setPosition(lServoDown);
+                    sleep(1000);
+                    robot.lPusher.setPosition(lServoUp);
+                }
+                break;
         }
-
     }
 }

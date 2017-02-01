@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="TeleOp1020", group="TeleOp118")
 public class TeleOp1020 extends HardwareMethods118_1617 {
+    boolean armdown = false;
 
     @Override
     public void init() {
@@ -16,7 +17,6 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
     @Override
 
     public void loop() {
-
 
 /**
  *  Controller 1
@@ -33,6 +33,20 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
         if(gamepad1.right_trigger != 0)
             reverseMode = true;
         drive(precisionMode, reverseMode);
+
+        //ARM
+        if(arm!= null) {
+            if (gamepad1.a) {
+                if (armdown) {
+                    arm.setPosition(0.0);
+                }
+                else{
+                    arm.setPosition(.6);
+                }
+                armdown ^= true;
+            }
+            busySleep(500);
+        }
 
         //Left Button Pusher
         if(lPusher != null) {

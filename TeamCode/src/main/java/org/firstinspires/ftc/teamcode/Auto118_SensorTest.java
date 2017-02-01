@@ -14,15 +14,11 @@ public class Auto118_SensorTest extends LinearOpMode {
        waitForStart();
        while(opModeIsActive()) {
 
-               robot.leftSensorOn.setState(true);
                int red1 = robot.leftSensor.red();
                telemetry.addData("left Sensors", red1);
-               robot.leftSensorOn.setState(false);
 
-               robot.rightSensorOn.setState(true);
                int red2 = robot.rightSensor.red();
                telemetry.addData("right Sensors", red2);
-               robot.rightSensorOn.setState(false);
                telemetry.update();
 
 
