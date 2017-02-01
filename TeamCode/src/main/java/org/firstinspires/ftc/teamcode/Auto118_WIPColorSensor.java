@@ -123,10 +123,10 @@ public class Auto118_WIPColorSensor extends LinearOpMode {
         }
 
         if(b1[0] > b1[1]) {
-            b1b = true;
+            b1b = false;
         }
         else {
-            b1b = false;
+            b1b = true;
         }
 
         if(r2[0] > r2[1]) {
