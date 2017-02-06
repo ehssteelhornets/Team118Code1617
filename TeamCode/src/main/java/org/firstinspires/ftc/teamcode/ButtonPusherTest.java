@@ -24,9 +24,12 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /** Created by Chris D on 10/5/2016
         *
@@ -35,7 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * "I2C Device"s, one named "mux" and the other named "ada". There are two
  * Adafruit color sensors plugged into the I2C multiplexer on ports 0 and 3.
  */
-@TeleOp(name="Button Pusher Test", group="Iterative Opmode")
+@Autonomous(name="Button Pusher Test", group="Iterative Opmode")
 public class ButtonPusherTest extends LinearOpMode {
     HardwareBot robot = new HardwareBot();
 
@@ -51,22 +54,25 @@ public class ButtonPusherTest extends LinearOpMode {
         muxColor = new MultiplexColorSensor(hardwareMap, "mux", "ada",
                 ports, milliSeconds,
                 MultiplexColorSensor.GAIN_16X);
+        robot.init(hardwareMap);
         waitForStart();
         muxColor.startPolling();
         while(opModeIsActive()) {
             leftRed = muxColor.getCRGB(0)[1];
             rightRed = muxColor.getCRGB(1)[1];
-
-            if (leftRed > rightRed) {
-                robot.lPusher.setPosition(robot.lServoDown);
-                sleep(1000);
-                robot.lPusher.setPosition(robot.lServoUp);
-            } else {
-                robot.rPusher.setPosition(robot.rServoDown);
-                sleep(1000);
-                robot.rPusher.setPosition(robot.rServoUp);
-            }
-            sleep(2000);
+            telemetry.addData("LEft",leftRed);
+            telemetry.addData("Right",rightRed);
+            telemetry.update();
+            try {
+                if (leftRed > rightRed) {
+                    robot.lPusher.setPosition(robot.lServoDown);
+                    robot.rPusher.setPosition(robot.rServoUp);
+                } else {
+                    robot.rPusher.setPosition(robot.rServoDown);
+                    robot.lPusher.setPosition(robot.lServoUp);
+                }
+            }catch(Exception e){}
+            sleep(1000);
             }
 
         }
