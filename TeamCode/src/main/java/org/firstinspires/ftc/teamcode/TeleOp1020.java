@@ -34,19 +34,7 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
             reverseMode = true;
         drive(precisionMode, reverseMode);
 
-        //ARM
-        if(arm!= null) {
-            if (gamepad1.a) {
-                if (armdown) {
-                    arm.setPosition(0.0);
-                }
-                else{
-                    arm.setPosition(.6);
-                }
-                armdown ^= true;
-            }
-            busySleep(500);
-        }
+
 
         //Left Button Pusher
         if(lPusher != null) {
@@ -73,6 +61,12 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
                     rPusher.setPosition(rServoUp);
                 }
                 busySleep(500);
+            }
+
+        if(release != null){
+            if(gamepad1.a && gamepad1.x) {
+                release.setPosition(releaseDown);
+            }
             }
 
 

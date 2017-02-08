@@ -27,6 +27,8 @@ public class HardwareBot  {
     public DcMotor elevator;
     public Servo queue;
 
+
+
     static double right;
     static double left;
 
@@ -50,6 +52,8 @@ public class HardwareBot  {
     public static final double lServoUp = .30;
     public static final double rServoUp = .80;
     public static int scooperIndex = 2; // Start With Scoop Up Ready to Deploy
+
+
 
     public static MultiplexColorSensor muxColor;
     public static int[] ports = {0,1};

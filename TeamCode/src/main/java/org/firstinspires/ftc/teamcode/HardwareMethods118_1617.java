@@ -41,7 +41,11 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     static Servo lPusher;
     static Servo rPusher;
     static Servo scooper;
-    static Servo arm;
+
+    public Servo release;
+    public static final double releaseUp = 1.0;
+    public static final double releaseDown = .55;
+
 
     static ColorSensor leftSensor;
     static ColorSensor rightSensor;
@@ -110,12 +114,13 @@ public abstract class HardwareMethods118_1617 extends OpMode {
         catch (Exception e) {
             queue = null;
         }
+
         try {
-            arm = hardwareMap.servo.get("Arm");
-            arm.setPosition(.6);
+            release = hardwareMap.servo.get("release");
+            release.setPosition(releaseUp);
         }
         catch (Exception e) {
-            arm = null;
+            release = null;
         }
 
         try {
