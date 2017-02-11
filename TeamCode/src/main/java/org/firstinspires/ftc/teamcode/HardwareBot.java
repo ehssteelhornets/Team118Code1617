@@ -38,7 +38,6 @@ public class HardwareBot  {
     public ColorSensor leftSensor;
     public ColorSensor rightSensor;
     public DeviceInterfaceModule cdim;
-
     public MultiplexColorSensor csLeft, csRight;
 
     public boolean precisionMode = false;
@@ -47,10 +46,10 @@ public class HardwareBot  {
     public boolean lPusherDown = false;
     public boolean rPusherDown = false;
 
-    public static final double lServoDown = .80;//
-    public static final double rServoDown= .30;
-    public static final double lServoUp = .30;
-    public static final double rServoUp = .80;
+    static final double lServoDown = .90;//
+    static final double rServoDown= .0;
+    static final double lServoUp = .40;
+    static final double rServoUp = .50;
     public static int scooperIndex = 2; // Start With Scoop Up Ready to Deploy
 
 

@@ -44,7 +44,7 @@ public abstract class HardwareMethods118_1617 extends OpMode {
 
     public Servo release;
     public static final double releaseUp = 1.0;
-    public static final double releaseDown = .55;
+    public static final double releaseDown = .75;
 
 
     static ColorSensor leftSensor;
@@ -181,6 +181,7 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     static double scaleMotor(double num, boolean precise) {
         if (num == 0.0)
             return 0.0;
+        //For precision mode
         double[] scaleArray = {0.5, 0.75, 1.0};
         double[] preciseArray = {0.1, 0.2, 0.3};
         // get the corresponding index for the scaleInput array.
@@ -198,7 +199,7 @@ public abstract class HardwareMethods118_1617 extends OpMode {
         return scaled;
     }
 
-
+//Debugging
 
     void printTelemetry(){
         telemetry.addData("RMotor Power", TeleOp1020.right_scaled);

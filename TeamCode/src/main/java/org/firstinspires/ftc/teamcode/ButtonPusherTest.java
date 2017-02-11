@@ -60,19 +60,21 @@ public class ButtonPusherTest extends LinearOpMode {
         while(opModeIsActive()) {
             leftRed = muxColor.getCRGB(0)[1];
             rightRed = muxColor.getCRGB(1)[1];
-            telemetry.addData("LEft",leftRed);
+            telemetry.addData("Left",leftRed);
             telemetry.addData("Right",rightRed);
             telemetry.update();
             try {
                 if (leftRed > rightRed) {
                     robot.lPusher.setPosition(robot.lServoDown);
-                    robot.rPusher.setPosition(robot.rServoUp);
+                    sleep(200);
+                    robot.lPusher.setPosition(robot.lServoUp);
                 } else {
                     robot.rPusher.setPosition(robot.rServoDown);
-                    robot.lPusher.setPosition(robot.lServoUp);
+                    sleep(200);
+                    robot.rPusher.setPosition(robot.rServoUp);
                 }
             }catch(Exception e){}
-            sleep(1000);
+            sleep(2000);
             }
 
         }
