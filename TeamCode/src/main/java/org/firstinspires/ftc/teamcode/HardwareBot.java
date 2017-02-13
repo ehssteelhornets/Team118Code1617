@@ -27,7 +27,9 @@ public class HardwareBot  {
     public DcMotor elevator;
     public Servo queue;
 
-
+    public Servo release;
+    public static final double releaseUp = 1.0;
+    public static final double releaseDown = .75;
 
     static double right;
     static double left;
@@ -50,8 +52,10 @@ public class HardwareBot  {
     static final double rServoDown= .0;
     static final double lServoUp = .40;
     static final double rServoUp = .50;
-    public static int scooperIndex = 2; // Start With Scoop Up Ready to Deploy
 
+
+
+    public static int scooperIndex = 2; // Start With Scoop Up Ready to Deploy
 
 
     public static MultiplexColorSensor muxColor;
@@ -167,6 +171,13 @@ public class HardwareBot  {
         }
         catch(Exception e) {
 
+        }
+        try {
+            release = hardwareMap.servo.get("release");
+            release.setPosition(releaseUp);
+        }
+        catch (Exception e) {
+            release = null;
         }
     }
 

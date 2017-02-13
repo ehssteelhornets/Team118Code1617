@@ -45,9 +45,11 @@ public class ButtonPusherTest extends LinearOpMode {
     MultiplexColorSensor muxColor;
     int[] ports = {0, 1};
 
-    int leftRed = 0;
-    int rightRed = 0;
+    int meanRight;
+    int meanLeft;
+    enum Color {RED, BLUE, TEST};
 
+    Color teamColor = Color.BLUE;
     @Override
     public void runOpMode() throws InterruptedException {
         int milliSeconds = 48;
@@ -57,23 +59,58 @@ public class ButtonPusherTest extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
         muxColor.startPolling();
+
+
         while(opModeIsActive()) {
-            leftRed = muxColor.getCRGB(0)[1];
-            rightRed = muxColor.getCRGB(1)[1];
-            telemetry.addData("Left",leftRed);
-            telemetry.addData("Right",rightRed);
+            meanLeft = 0;
+            meanRight = 0;
+            for(int x=0; x<10; x++) {
+                meanLeft += muxColor.getCRGB(0)[1];
+                meanRight += muxColor.getCRGB(1)[1];
+                sleep(50);
+            }
+            meanLeft /= 10;
+            meanRight /= 10;
+            telemetry.addData("Left",meanLeft);
+            telemetry.addData("Right",meanRight);
             telemetry.update();
-            try {
-                if (leftRed > rightRed) {
-                    robot.lPusher.setPosition(robot.lServoDown);
-                    sleep(200);
-                    robot.lPusher.setPosition(robot.lServoUp);
-                } else {
-                    robot.rPusher.setPosition(robot.rServoDown);
-                    sleep(200);
-                    robot.rPusher.setPosition(robot.rServoUp);
+            if (meanLeft > meanRight) {
+                switch (teamColor) {
+                    case RED:
+                        robot.lPusher.setPosition(robot.lServoDown);
+                        sleep(500);
+                        robot.lPusher.setPosition(robot.lServoUp);
+                        break;
+                    case BLUE:
+                        robot.rPusher.setPosition(robot.rServoDown);
+                        sleep(500);
+                        robot.rPusher.setPosition(robot.rServoUp);
+                        break;
                 }
-            }catch(Exception e){}
+            } else {
+                switch (teamColor) {
+                    case RED:
+                        robot.lPusher.setPosition(robot.lServoDown);
+                        sleep(500);
+                        robot.lPusher.setPosition(robot.lServoUp);
+                        break;
+                    case BLUE:
+                        robot.rPusher.setPosition(robot.rServoDown);
+                        sleep(200);
+                        robot.rPusher.setPosition(robot.rServoUp);
+                        break;
+                }
+            }
+
+            for (int i=0; i<ports.length; i++) {
+                int[] crgb = muxColor.getCRGB(ports[i]);
+
+                telemetry.addLine("Sensor " + ports[i]);
+                telemetry.addData("CRGB", "%5d %5d %5d %5d",
+                        crgb[0], crgb[1], crgb[2], crgb[3]);
+            }
+
+            telemetry.update();
             sleep(2000);
             }
 
