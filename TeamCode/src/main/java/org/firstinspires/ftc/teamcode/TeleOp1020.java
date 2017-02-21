@@ -66,6 +66,7 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
         if(release != null){
             if(gamepad1.b && gamepad1.x) {
                 release.setPosition(releaseDown);
+                armdown = !(armdown);
             }
             }
 
@@ -94,6 +95,16 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
                     shooter.setPower(0);
                 }
             }
+        }
+
+        if(armdown)
+        {
+            if(gamepad1.dpad_down)
+            {
+                release.setPosition(releaseUp);
+
+            }
+
         }
 
         if(elevator != null) {

@@ -19,7 +19,7 @@ public class Auto118_POS extends LinearOpMode {
                 robot.shooter.setPower(1);
                 telemetry.addData("shoot 1", 1);
                 robot.printTelemetry(telemetry);
-                sleep(1450);
+                sleep(1500);
                 robot.shooter.setPower(0);
                 robot.queue.setPosition(.5);
                 sleep(1000);
@@ -27,7 +27,7 @@ public class Auto118_POS extends LinearOpMode {
                 robot.shooter.setPower(1);
                 telemetry.addData("shoot 2", 2);
                 robot.printTelemetry(telemetry);
-                sleep(1450);
+                sleep(1500);
                 robot.shooter.setPower(0);
 
                 sleep(10000);
@@ -35,9 +35,10 @@ public class Auto118_POS extends LinearOpMode {
                     robot.reset_drive_encoders();
 
                 }
+                robot.SetTargetPosition(robot.getNumTicks(70));// may need to go before run to position??
                 robot.RunToPosition();
                 idle();
-                robot.SetTargetPosition(robot.getNumTicks(70));// may need to go before run to position??
+
 
                 opState++;
             }
