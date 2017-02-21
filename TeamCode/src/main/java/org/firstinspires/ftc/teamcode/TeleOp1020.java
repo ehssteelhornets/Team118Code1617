@@ -22,52 +22,49 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
  *  Controller 1
  *  -Driving - sticks, left trigger
  *  -Button Pushers - bumpers
-  */
+ */
         //Driving
         right = gamepad1.right_stick_y;
         left = gamepad1.left_stick_y;
         boolean precisionMode = false;
-        if(gamepad1.left_trigger != 0)
+        if (gamepad1.left_trigger != 0)
             precisionMode = true;
         boolean reverseMode = false;
-        if(gamepad1.right_trigger != 0)
+        if (gamepad1.right_trigger != 0)
             reverseMode = true;
         drive(precisionMode, reverseMode);
 
 
-
         //Left Button Pusher
-        if(lPusher != null) {
+        if (lPusher != null) {
             if (gamepad1.left_bumper) {
-               // lPusherDown ^= true;
-               // if (lPusherDown) {
+                if (lPusherDown) {
                     lPusher.setPosition(lServoDown);
-                }
-            else {
+                    lPusherDown = true;
+                } else {
                     lPusher.setPosition(lServoUp);
+                    lPusherDown = false;
                 }
-                busySleep(500);
+                //busySleep(500);
             }
 
 
-        //Right Button Pusher
-        if(rPusher != null){
-            if (gamepad1.right_bumper) {
-               // rPusherDown ^= true;
-               // if (rPusherDown) {
+            //Right Button Pusher
+            if (rPusher != null) {
+                if (gamepad1.right_bumper) {
+                    // rPusherDown ^= true;
+                    // if (rPusherDown) {
                     rPusher.setPosition(rServoDown);
-                }
-            else {
+                } else {
                     rPusher.setPosition(rServoUp);
                 }
-                busySleep(500);
+                //busySleep(500);
             }
 
-        if(release != null){
-            if(gamepad1.b && gamepad1.x) {
-                release.setPosition(releaseDown);
-                armdown = !(armdown);
-            }
+            if (release != null) {
+                if (gamepad1.b && gamepad1.x) {
+                    release.setPosition(releaseDown);
+                }
             }
 
 
@@ -77,73 +74,58 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
  *  -Elevator and Intake - left Trigger and y
  *  -Queue servos - left bumper
  *  -
-  */
+ */
 
-        if(shooter != null) {
-            if (gamepad2.a)
-            {
-                if (gamepad2.right_trigger != 0) {
-                    shooter.setPower(-.1);
+            if (shooter != null) {
+                if (gamepad2.a) {
+                    if (gamepad2.right_trigger != 0) {
+                        shooter.setPower(-.1);
+                    } else {
+                        shooter.setPower(0);
+                    }
                 } else {
-                    shooter.setPower(0);
+                    if (gamepad2.right_trigger != 0) {
+                        shooter.setPower(1);
+                    } else {
+                        shooter.setPower(0);
+                    }
                 }
             }
-            else {
-                if (gamepad2.right_trigger != 0) {
-                    shooter.setPower(1);
+
+            if (elevator != null) {
+                if (gamepad2.left_trigger != 0)
+                    elevator.setPower(1);
+                else if (gamepad2.y)
+                    elevator.setPower(-1);
+                else
+                    elevator.setPower(0);
+
+            }
+            if (intake != null) {
+                if (gamepad2.left_trigger != 0)
+                    intake.setPower(1);
+                else if (gamepad2.y)
+                    intake.setPower(-1);
+                else
+                    intake.setPower(0);
+            }
+
+            if (queue != null) {
+                if (gamepad2.left_bumper) {
+                    queue.setPosition(0.5);
+
                 } else {
-                    shooter.setPower(0);
+                    queue.setPosition(0);
                 }
             }
+            printTelemetry();
         }
-
-        if(armdown)
-        {
-            if(gamepad1.dpad_down)
-            {
-                release.setPosition(releaseUp);
-
-            }
-
-        }
-
-        if(elevator != null) {
-            if (gamepad2.left_trigger != 0)
-                elevator.setPower(1);
-            else if(gamepad2.y)
-                elevator.setPower(-1);
-            else
-                elevator.setPower(0);
-
-        }
-        if(intake != null) {
-            if (gamepad2.left_trigger != 0)
-                intake.setPower(1);
-            else if(gamepad2.y)
-                intake.setPower(-1);
-            else
-                intake.setPower(0);
-        }
-
-        if(queue != null) {
-            if (gamepad2.left_bumper) {
-                queue.setPosition(0.5);
-
-            } else {
-                queue.setPosition(0);
-            }
-        }
-
-
-
-        printTelemetry();
     }
 
-    static double right_scaled;
-    static double left_scaled;
+
     static void drive(boolean precise, boolean reverse) {
-        right_scaled = scaleMotor(right,precise);
-        left_scaled = scaleMotor(left,precise);
+        double right_scaled = scaleMotor(right,precise);
+        double left_scaled = scaleMotor(left,precise);
 
         if(reverse) {
             double temp = right_scaled;

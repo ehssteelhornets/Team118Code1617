@@ -146,20 +146,16 @@ public class HardwareBot  {
         }
 
         try {
-            //leftSensorOn = hardwareMap.digitalChannel.get("cs1p");
             leftSensor = hardwareMap.colorSensor.get("leftRGB");
         }
         catch(Exception e)  {
-            //leftSensorOn = null;
             leftSensor = null;
         }
 
         try {
-            //rightSensorOn = hardwareMap.digitalChannel.get("cs2p");
             rightSensor = hardwareMap.colorSensor.get("rightRGB");
         }
         catch(Exception e) {
-            //rightSensorOn = null;
             rightSensor = null;
         }
 
@@ -210,8 +206,8 @@ public class HardwareBot  {
     }
 
     public void printTelemetry(Telemetry telemetry){
-        telemetry.addData("RMotor Power", TeleOp1020.right_scaled);
-        telemetry.addData("LMotor power", TeleOp1020.left_scaled);
+        telemetry.addData("RMotor Power", r$front.getPower());
+        telemetry.addData("LMotor power", l$front.getPower());
         telemetry.addData("LServo",lPusherDown);
         telemetry.addData("RServo", rPusherDown);
         telemetry.addData("Launcher power", shooter.getPower());
@@ -438,26 +434,6 @@ public class HardwareBot  {
     public boolean has_right_rear_encoder_reset() {
 
         return r$rear.getCurrentPosition() == 0;
-    }
-
-
-
-    /**
-     * Color Sensor Stuff
-     **/
-
-    public int getRed(ColorSensor s) {
-        if(s != null) {
-            return s.red();
-        }
-        return -1;
-    }
-
-    public int getBlue(ColorSensor s)   {
-        if(s != null)   {
-            return s.blue();
-        }
-        return -1;
     }
 
 

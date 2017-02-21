@@ -74,6 +74,6 @@ public class MultiplexColorSensorTest extends OpMode
 
     @Override
     public void stop() {
-
     }
+
 }

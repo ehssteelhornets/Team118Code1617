@@ -47,8 +47,7 @@ public class ButtonPusherTest extends LinearOpMode {
 
     int meanRight;
     int meanLeft;
-    enum Color {RED, BLUE, TEST};
-
+    enum Color {RED, BLUE,};
     Color teamColor = Color.BLUE;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -60,13 +59,15 @@ public class ButtonPusherTest extends LinearOpMode {
         waitForStart();
         muxColor.startPolling();
 
-
         while(opModeIsActive()) {
             meanLeft = 0;
             meanRight = 0;
+            int[] crgb;
             for(int x=0; x<10; x++) {
-                meanLeft += muxColor.getCRGB(0)[1];
-                meanRight += muxColor.getCRGB(1)[1];
+                crgb = muxColor.getCRGB(0);
+                meanLeft += crgb[1];
+                crgb = muxColor.getCRGB(1);
+                meanRight += crgb[1];
                 sleep(50);
             }
             meanLeft /= 10;
@@ -103,7 +104,7 @@ public class ButtonPusherTest extends LinearOpMode {
             }
 
             for (int i=0; i<ports.length; i++) {
-                int[] crgb = muxColor.getCRGB(ports[i]);
+                crgb = muxColor.getCRGB(ports[i]);
 
                 telemetry.addLine("Sensor " + ports[i]);
                 telemetry.addData("CRGB", "%5d %5d %5d %5d",

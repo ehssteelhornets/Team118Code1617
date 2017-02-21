@@ -46,23 +46,16 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     public static final double releaseUp = 1.0;
     public static final double releaseDown = .75;
 
-
-    static ColorSensor leftSensor;
-    static ColorSensor rightSensor;
-    static DeviceInterfaceModule cdim;
-    static DigitalChannel leftSensorOn;
-    static DigitalChannel rightSensorOn;
-
     static boolean precisionMode = false;
 
 
     static boolean lPusherDown = false;
     static boolean rPusherDown = false;
 
-    static final double lServoDown = .80;//
+    static final double lServoDown = .90;//
     static final double rServoDown= .0;
-    static final double lServoUp = .35;
-    static final double rServoUp = .80;
+    static final double lServoUp = .40;
+    static final double rServoUp = .50;
     static int scooperIndex = 2; // Start With Scoop Up Ready to Deploy
 
 
@@ -139,27 +132,6 @@ public abstract class HardwareMethods118_1617 extends OpMode {
             rPusher = null;
         }
 
-        try {
-            leftSensor = hardwareMap.colorSensor.get("leftRGB");
-            rightSensor = hardwareMap.colorSensor.get("rightRGB");
-            cdim = hardwareMap.deviceInterfaceModule.get("DIM");
-        }
-        catch (Exception e) {
-            leftSensor = null;
-            rightSensor = null;
-            cdim = null;
-        }
-
-        try{
-            leftSensorOn.setMode(DigitalChannelController.Mode.OUTPUT);
-            rightSensorOn.setMode(DigitalChannelController.Mode.OUTPUT);
-            leftSensorOn.setState(false);
-            rightSensorOn.setState(false);
-        }
-        catch(Exception e) {
-
-        }
-
     }
 
     /**
@@ -202,8 +174,8 @@ public abstract class HardwareMethods118_1617 extends OpMode {
 //Debugging
 
     void printTelemetry(){
-        telemetry.addData("RMotor Power", TeleOp1020.right_scaled);
-        telemetry.addData("LMotor power", TeleOp1020.left_scaled);
+        telemetry.addData("RMotor Power", r$front.getPower());
+        telemetry.addData("LMotor power", l$front.getPower());
         telemetry.addData("LServo",lPusherDown);
         telemetry.addData("RServo", rPusherDown);
         telemetry.addData("Launcher power", shooter.getPower());
