@@ -22,7 +22,7 @@ public class Auto118_GyroTest0221 extends LinearOpMode {
     //Yaw is Around Z Axis which is the normal vector of the screen (Perpendicular)
     public enum Orientation {TANGENTAL, PERPENDICUALAR}
     public Orientation phoneOrientation = Orientation.PERPENDICUALAR;
-
+    //Ian Git Test
     int opState = 1;
     HardwareBot robot = new HardwareBot();
    @Override
