@@ -9,7 +9,6 @@ import org.firstinspires.ftc.robotcontroller.internal.GyroSensorComponents;
 @Autonomous(name="Auto118_GyroTest0221", group="Auto118")
 
 public class Auto118_GyroTest0221 extends LinearOpMode {
-    HardwareBot robot = new HardwareBot();
     float[] data = new float[3];
     GyroSensorComponents gyroSensorComponents = null;
     //With Rear Camera Facing Forward
@@ -24,7 +23,8 @@ public class Auto118_GyroTest0221 extends LinearOpMode {
     public enum Orientation {TANGENTAL, PERPENDICUALAR}
     public Orientation phoneOrientation = Orientation.PERPENDICUALAR;
 
-   int opState = 1;
+    int opState = 1;
+    HardwareBot robot = new HardwareBot();
    @Override
     public void runOpMode() throws InterruptedException{
        robot.init(hardwareMap);
@@ -38,7 +38,26 @@ public class Auto118_GyroTest0221 extends LinearOpMode {
            telemetry.addData("Y", gyroSensorComponents.rotationData[1]);
            telemetry.addData("Z", gyroSensorComponents.rotationData[2]);
            telemetry.update();
+
+           double currentHeading;
+           if(phoneOrientation == Orientation.PERPENDICUALAR) {
+                currentHeading = convertToDegrees(gyroSensorComponents.rotationData[1]);
+           }
+           else {
+                currentHeading = convertToDegrees(gyroSensorComponents.rotationData[2]);
+           }
+
+           
+
            idle(); // Always call idle() at the bottom
        }
+    }
+
+    static double convertToDegrees(double thetaOverTwo)    {
+        double theta = 2 * Math.asin(thetaOverTwo);
+        if(theta < 0.0)  {
+            theta += 360.0;
+        }
+        return theta;
     }
 }
