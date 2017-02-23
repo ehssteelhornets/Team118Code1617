@@ -13,8 +13,8 @@ public class Auto118_GyroTest0221 extends LinearOpMode {
     GyroSensorComponents gyroSensorComponents = null;
     //With Rear Camera Facing Forward
     //Rock Back and Forth is around X axis Tangental to ground 0 is approxamate East
-    //Twist/pan is around y axis Tangental to ground 0 is Geomagnetic North
-    //Tilt Side to side around z axis  perpendicular to ground plane 0 is screen skyward
+    //Twist/pan is around y axis Perpindicular to ground 0 is Geomagnetic North
+    //Tilt Side to side around z axis  Tangental to ground plane 0 is screen skyward
 
     //With Rear Camera Facing Ground
     //Pitch is Around X Axis running from left to right of screen
@@ -22,7 +22,7 @@ public class Auto118_GyroTest0221 extends LinearOpMode {
     //Yaw is Around Z Axis which is the normal vector of the screen (Perpendicular)
     public enum Orientation {TANGENTAL, PERPENDICUALAR}
     public Orientation phoneOrientation = Orientation.PERPENDICUALAR;
-    //Ian Git Test
+
     int opState = 1;
     HardwareBot robot = new HardwareBot();
    @Override
@@ -41,11 +41,12 @@ public class Auto118_GyroTest0221 extends LinearOpMode {
 
            double currentHeading;
            if(phoneOrientation == Orientation.PERPENDICUALAR) {
-                currentHeading = convertToDegrees(gyroSensorComponents.rotationData[1]);
+                currentHeading = geoVectorToDegrees(gyroSensorComponents.rotationData[1]);
            }
            else {
-                currentHeading = convertToDegrees(gyroSensorComponents.rotationData[2]);
+                currentHeading = geoVectorToDegrees(gyroSensorComponents.rotationData[2]);
            }
+            //Driving uses basic heading ranging from -180 to 180 degrees
 
            
 
@@ -53,11 +54,15 @@ public class Auto118_GyroTest0221 extends LinearOpMode {
        }
     }
 
-    static double convertToDegrees(double thetaOverTwo)    {
-        double theta = 2 * Math.asin(thetaOverTwo);
-        if(theta < 0.0)  {
-            theta += 360.0;
+    static double geoVectorToDegrees(double sinThetaOverTwo)    {
+        double theta = 2 * Math.asin(sinThetaOverTwo);
+        if (theta < 0.0) {
+            theta += 360
         }
         return theta;
     }
 }
+
+//use initail then as follows for each individual turn
+//lower values <180 add 360 ex 5 becomes 365 then all values inside loop have 360 added as long as they remain below 180
+//higher values >180 subtract 360 ex 270 becomes -90 all values inside loop subtract 360 as long as they remain above 180
