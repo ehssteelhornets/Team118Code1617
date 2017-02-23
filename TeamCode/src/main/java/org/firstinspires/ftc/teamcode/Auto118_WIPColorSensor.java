@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -68,7 +69,7 @@ public class Auto118_WIPColorSensor extends LinearOpMode {
             }
 
             if (opState == 3) {
-                robot.turn(90);
+                robot.turn(90,);
                 robot.reset_drive_encoders();
                 doColorSensor();
                 opState++;
@@ -182,3 +183,4 @@ public class Auto118_WIPColorSensor extends LinearOpMode {
         }
     }
 }
+*/

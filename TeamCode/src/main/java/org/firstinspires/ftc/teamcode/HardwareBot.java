@@ -246,31 +246,6 @@ public class HardwareBot  {
         }
     }
 
-    public void turn(int degrees) {
-        double[] drivePower = new double[2];
-        drivePower[0] = 0.0;
-        drivePower[1] = 0.0;
-        degrees = degrees % 360;
-        if (degrees > 180) {
-
-            drivePower[0] = 1.0;
-            drivePower[1] = -1.0;
-
-        } else {
-
-            drivePower[0] = -1.0;
-            drivePower[1] = 1.0;
-
-        }
-
-        int ticks = get_ticks_degrees(degrees);
-        set_drive_power(drivePower[0] = 1.0, drivePower[1]);
-        if (have_encoders_reached(ticks)) {
-
-            set_drive_power(0);
-
-        }
-    }
 
     public int get_ticks_degrees(int degrees) {
 
