@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcontroller.internal.GyroSensorComponents;
 
 public class Auto118_GyroTest0224 extends LinearOpMode {
     float[] data = new float[3];
-    GyroSensorComponents gyroSensorComponents = null;
+    private static GyroSensorComponents gyroSensorComponents = null;
     //With Rear Camera Facing Forward
     //Rock Back and Forth is around X axis Tangental to ground 0 is approxamate East
     //Twist/pan is around y axis Perpindicular to ground 0 is Geomagnetic North
@@ -21,7 +21,8 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
     //Roll is Around Y Axis running from bottom to top of screen
     //Yaw is Around Z Axis which is the normal vector of the screen (Perpendicular)
     public enum Orientation {TANGENTAL, PERPENDICUALAR}
-    public Orientation phoneOrientation = Orientation.PERPENDICUALAR;
+    private static Orientation phoneOrientation = Orientation.PERPENDICUALAR;
+    private static double initialHeading;
 
     int opState = 1;
     static HardwareBot robot = new HardwareBot();
@@ -40,88 +41,18 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
            telemetry.addData("Z", gyroSensorComponents.rotationData[2]);
            telemetry.update();
 
-           double initialHeading;
-
-           initialHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-           turn(30, initialHeading, gyroSensorComponents, phoneOrientation);
-           sleep(1000);
-           initialHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-           turn(-30, initialHeading, gyroSensorComponents, phoneOrientation);
-           sleep(2000);
-
-           initialHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-           turn(45, initialHeading, gyroSensorComponents, phoneOrientation);
-           sleep(1000);
-           initialHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-           turn(-45, initialHeading, gyroSensorComponents, phoneOrientation);
-           sleep(2000);
-
-           initialHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-           turn(90, initialHeading, gyroSensorComponents, phoneOrientation);
-           sleep(1000);
-           initialHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-           turn(-90, initialHeading, gyroSensorComponents, phoneOrientation);
-           sleep(2000);
-
-           initialHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-           turn(120, initialHeading, gyroSensorComponents, phoneOrientation);
-           sleep(1000);
-           initialHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-           turn(-120, initialHeading, gyroSensorComponents, phoneOrientation);
-           sleep(2000);
-
-           initialHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-           turn(135, initialHeading, gyroSensorComponents, phoneOrientation);
-           sleep(1000);
-           initialHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-           turn(-135, initialHeading, gyroSensorComponents, phoneOrientation);
-           sleep(200);
-
-           initialHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-           turn(180, initialHeading, gyroSensorComponents, phoneOrientation);
-           sleep(1000);
-           initialHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-           turn(-180, initialHeading, gyroSensorComponents, phoneOrientation);
-           sleep(1000);
-
-
-
-           /*
            switch(opState) {
                case 0:
                    drive(6);
                    opState++;
                    break;
                case 1:
-                   currentHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-                   turn(90, currentHeading, gyroSensorComponents, phoneOrientation);
+                   initialHeading = getCurrentHeading();
+                   turn(90);
                    opState++;
                    break;
-               case 2:
-                   drive(6);
-                   opState++;
-                   break;
-               case 3:
-                   currentHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-                   turn(5, currentHeading, gyroSensorComponents, phoneOrientation);
-                   opState++;
-                   break;
-               case 4:
-                   drive(6);
-                   opState++;
-                   break;
-               case 5:
-                   currentHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
-                   turn(270, currentHeading, gyroSensorComponents, phoneOrientation);
-                   opState++;
-                   break;
-               case 6:
-                   drive(6);
-                   opState++;
-                   break;
-
            }
-*/
+
            idle(); // Always call idle() at the bottom
        }
     }
@@ -139,7 +70,7 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
     static final double DRIVE_POWER = 0.5;
     //Degrees to turn. Direction indicated by sign. Postive is Clockwise
     //initial Heading in degrees from 0-360
-    static void turn(double degrees, double initHeading, GyroSensorComponents gyroSensorComponents, Orientation phoneOrientation)    {
+    static void turn(double degrees)    {
         if(degrees < 180)   {
             degrees += 360;
         }
@@ -147,36 +78,36 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
             degrees -= 360;
         }
 
-        double currHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
+        double currHeading = getCurrentHeading();
 
         if(degrees <= 0)    {   //Turn CCW
-            while(Math.abs(currHeading - initHeading) > degrees)    {
+            while(Math.abs(currHeading - initialHeading) > degrees)    {
                 robot.set_drive_power(-DRIVE_POWER, DRIVE_POWER);
-                currHeading = getCurrentHeading(gyroSensorComponents, phoneOrientation);
+                currHeading = getCurrentHeading();
             }
         }
         else    { //Turn CW
-            while(Math.abs(currHeading - initHeading) < degrees)    {
+            while(Math.abs(currHeading - initialHeading) < degrees)    {
                 robot.set_drive_power(DRIVE_POWER, -DRIVE_POWER);
-                getCurrentHeading(gyroSensorComponents, phoneOrientation);
+                currHeading = getCurrentHeading();
             }
         }
         robot.set_drive_power(0.0);
     }
 
-    static double getCurrentHeading(GyroSensorComponents gyroSensorComponents, Orientation phoneOrientation)   {
+    static double getCurrentHeading()   {
         double currentHeading;
         if(phoneOrientation == Orientation.PERPENDICUALAR) {
-            currentHeading = geoVectorToDegrees(gyroSensorComponents.rotationData[1]);
+            currentHeading = geoVectorToDegrees(gyroSensorComponents.rotationData[0]);
         }
         else {
-            currentHeading = geoVectorToDegrees(gyroSensorComponents.rotationData[2]);
+            currentHeading = geoVectorToDegrees(gyroSensorComponents.rotationData[0]);//?
         }
         return currentHeading;
     }
 
-    static double geoVectorToDegrees(double sinThetaOverTwo)    {
-        double theta = 2 * Math.asin(sinThetaOverTwo);
+    static double geoVectorToDegrees(double angle)    {
+        double theta =  Math.toDegrees(angle);
         if (theta < 0.0) {
             theta += 360;
         }
