@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcontroller.internal.GyroSensorComponents;
 
 @Autonomous(name="Auto118_GyroTest0221", group="Auto118")
 
-public class Auto118_GyroTest0221 extends LinearOpMode {
+public class Auto118_GyroTest0224 extends LinearOpMode {
     float[] data = new float[3];
     GyroSensorComponents gyroSensorComponents = null;
     //With Rear Camera Facing Forward
