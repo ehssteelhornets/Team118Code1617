@@ -23,7 +23,6 @@ public class Auto118_GyroSensorPreview extends LinearOpMode {
     //Yaw is Around Z Axis which is the normal vector of the screen (Perpendicular)
     public enum Orientation {TANGENTAL, PERPENDICUALAR}
     private static Orientation phoneOrientation = Orientation.PERPENDICUALAR;
-    private static double initialHeading;
     static HardwareBot robot = new HardwareBot();
    @Override
     public void runOpMode() throws InterruptedException{
