@@ -25,7 +25,7 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
     private static Orientation phoneOrientation = Orientation.PERPENDICUALAR;
     private static double initialHeading;
     private static Telemetry telem ;
-    int opState = 1;
+    private static int driven = 0;
     static HardwareBot robot = new HardwareBot();
    @Override
     public void runOpMode() throws InterruptedException{
@@ -41,6 +41,7 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
            telemetry.addData("X", gyroSensorComponents.rotationData[0]);
            telemetry.addData("Y", gyroSensorComponents.rotationData[1]);
            telemetry.addData("Z", gyroSensorComponents.rotationData[2]);
+           telemetry.addData("Driven",driven);
            telemetry.update();
 
            switch(opState) {
@@ -53,6 +54,7 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
                    telemetry.addData("Init:", initialHeading);
                    telemetry.update();
                    turn(90);
+                   driven =1;
                    opState++;
                    break;
            }
@@ -64,30 +66,45 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
     static void drive(int inches)   {
         int targetTicks = robot.get_ticks_degrees(inches);
         robot.reset_drive_encoders();
+        robot.RunWithEncoders();
+
         while(!robot.have_encoders_reached(targetTicks))    {
             robot.set_drive_power(DRIVE_POWER);
         }
         robot.set_drive_power(0.0);
-        robot.reset_drive_encoders();
     }
 
     static final double DRIVE_POWER = 0.5;
     //Degrees to turn. Direction indicated by sign. Postive is Clockwise
     //initial Heading in degrees from 0-360
     static void turn(double degrees)    {
-        if(degrees < 180)   {
-            degrees += 360;
+
+        if(initialHeading < 180)   {
+            initialHeading += 360;
         }
         else    {
-            degrees -= 360;
+            initialHeading -= 360;
         }
 
         double currHeading = getCurrentHeading();
+        if(currHeading < 180)   {
+            currHeading += 360;
+        }
+        else    {
+            currHeading -= 360;
+        }
 
-        if(degrees <= 0)    {   //Turn CCW
-            while(Math.abs(currHeading - initialHeading) > degrees)    {
+        if(degrees < 0)    {   //Turn CCW
+            while(-Math.abs(currHeading - initialHeading) > degrees)    {
                 robot.set_drive_power(-DRIVE_POWER, DRIVE_POWER);
                 currHeading = getCurrentHeading();
+                if(currHeading < 180)   {
+                    currHeading += 360;
+                }
+                else    {
+                    currHeading -= 360;
+                }
+                telem.addData("Init:", initialHeading);
                 telem.addData("Heading", currHeading);
                 telem.update();
             }
@@ -96,6 +113,13 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
             while(Math.abs(currHeading - initialHeading) < degrees)    {
                 robot.set_drive_power(DRIVE_POWER, -DRIVE_POWER);
                 currHeading = getCurrentHeading();
+                if(currHeading < 180)   {
+                    currHeading += 360;
+                }
+                else    {
+                    currHeading -= 360;
+                }
+                telem.addData("Init:", initialHeading);
                 telem.addData("Heading", currHeading);
                 telem.update();
             }
