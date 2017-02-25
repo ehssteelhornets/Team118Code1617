@@ -64,6 +64,15 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
             if (release != null) {
                 if (gamepad1.b && gamepad1.x) {
                     release.setPosition(releaseDown);
+                    releaseTog = true;
+                }
+                if (releaseTog)
+                {
+                    if (gamepad1.dpad_down)
+                    {
+                        release.setPosition(releaseUp);
+                        releaseTog = false;
+                    }
                 }
             }
 

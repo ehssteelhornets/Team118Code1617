@@ -45,6 +45,7 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     public Servo release;
     public static final double releaseUp = 1.0;
     public static final double releaseDown = .75;
+    public static boolean releaseTog = false;
 
     static boolean precisionMode = false;
 
