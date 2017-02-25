@@ -55,7 +55,7 @@ public class Auto118_GyroSensorPreview extends LinearOpMode {
     }
 
     static double geoVectorToDegrees(double angle)    {
-        double theta =  Math.toDegrees(angle);
+        double theta =  4 * Math.toDegrees(angle);
         if (theta < 0.0) {
             theta += 360;
         }

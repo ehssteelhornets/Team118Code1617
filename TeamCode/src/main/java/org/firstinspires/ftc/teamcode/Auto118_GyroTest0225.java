@@ -139,7 +139,7 @@ public class Auto118_GyroTest0225 extends LinearOpMode {
     }
 
     static double geoVectorToDegrees(double angle)    {
-        double theta =  Math.toDegrees(angle);
+        double theta =  4* Math.toDegrees(angle);
         if (theta < 0.0) {
             theta += 360;
         }
