@@ -29,7 +29,6 @@ public class GyroSensorComponentsOld implements SensorEventListener {
         sensorManager.registerListener(this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
                 SensorManager.SENSOR_DELAY_NORMAL);
-                SensorManager.getOrientation()
     }
 
     public void unregisterListener(FtcRobotControllerActivity ftcRobotControllerActivity) {

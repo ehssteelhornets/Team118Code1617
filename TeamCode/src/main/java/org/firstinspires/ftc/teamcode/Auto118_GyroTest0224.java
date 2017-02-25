@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
 import org.firstinspires.ftc.robotcontroller.internal.GyroSensorComponents;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Autonomous(name="Auto118_GyroTest0221", group="Auto118")
 
@@ -23,7 +24,7 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
     public enum Orientation {TANGENTAL, PERPENDICUALAR}
     private static Orientation phoneOrientation = Orientation.PERPENDICUALAR;
     private static double initialHeading;
-
+    private static Telemetry telem ;
     int opState = 1;
     static HardwareBot robot = new HardwareBot();
    @Override
@@ -35,6 +36,7 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
        }catch(Exception e){}
        waitForStart();
        int opState = 0;
+       telem=telemetry;
        while(opModeIsActive()) {
            telemetry.addData("X", gyroSensorComponents.rotationData[0]);
            telemetry.addData("Y", gyroSensorComponents.rotationData[1]);
@@ -48,6 +50,8 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
                    break;
                case 1:
                    initialHeading = getCurrentHeading();
+                   telemetry.addData("Init:", initialHeading);
+                   telemetry.update();
                    turn(90);
                    opState++;
                    break;
@@ -84,12 +88,16 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
             while(Math.abs(currHeading - initialHeading) > degrees)    {
                 robot.set_drive_power(-DRIVE_POWER, DRIVE_POWER);
                 currHeading = getCurrentHeading();
+                telem.addData("Heading", currHeading);
+                telem.update();
             }
         }
         else    { //Turn CW
             while(Math.abs(currHeading - initialHeading) < degrees)    {
                 robot.set_drive_power(DRIVE_POWER, -DRIVE_POWER);
                 currHeading = getCurrentHeading();
+                telem.addData("Heading", currHeading);
+                telem.update();
             }
         }
         robot.set_drive_power(0.0);
