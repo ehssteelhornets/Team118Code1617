@@ -26,6 +26,7 @@ public class HardwareBot  {
     public DcMotor intake;
     public DcMotor elevator;
     public Servo queue;
+    public DcMotor LEDs;
 
     public Servo release;
     public static final double releaseUp = 1.0;
@@ -71,24 +72,60 @@ public class HardwareBot  {
      *  This init method has fail-safes and should be used in all programs to ensure that the hardware configuration is the same
      */
     public void init(HardwareMap hardwareMap) {
+        try {
+            release = hardwareMap.servo.get("release");
+            release.setPosition(releaseUp);
+        }
+        catch (Exception e) {
+            release = null;
+        }
+
+        try {
+            LEDs = hardwareMap.dcMotor.get("leds");
+        }
+        catch (Exception e) {
+            LEDs = null;
+        }
+        try {
+            LEDs.setPower(1);
+        }
+        catch (Exception e) {
+            LEDs = null;
+        }
+
 
         try {
             r$rear = hardwareMap.dcMotor.get("rrear");
-            r$front = hardwareMap.dcMotor.get("rfore");
             r$rear.setDirection(DcMotor.Direction.REVERSE);
-            r$front.setDirection(DcMotor.Direction.REVERSE);
+
         }
         catch (Exception e) {
             r$rear = null;
+
+        }
+        try {
+            r$front = hardwareMap.dcMotor.get("rfore");
+            r$front.setDirection(DcMotor.Direction.REVERSE);
+        }
+        catch (Exception e) {
             r$front = null;
         }
 
         try {
             l$front = hardwareMap.dcMotor.get("lfore");
-            l$rear = hardwareMap.dcMotor.get("lrear");
+
         }
         catch (Exception e) {
             l$front = null;
+
+        }
+
+        try {
+
+            l$rear = hardwareMap.dcMotor.get("lrear");
+        }
+        catch (Exception e) {
+
             l$rear = null;
         }
 
@@ -168,13 +205,7 @@ public class HardwareBot  {
         catch(Exception e) {
 
         }
-        try {
-            release = hardwareMap.servo.get("release");
-            release.setPosition(releaseUp);
-        }
-        catch (Exception e) {
-            release = null;
-        }
+
     }
 
 

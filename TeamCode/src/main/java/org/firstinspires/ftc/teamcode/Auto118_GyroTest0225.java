@@ -7,9 +7,9 @@ import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity
 import org.firstinspires.ftc.robotcontroller.internal.GyroSensorComponents;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@Autonomous(name="Auto118_GyroTest0221", group="Auto118")
+@Autonomous(name="Auto118_GyroTest0225", group="Auto118")
 
-public class Auto118_GyroTest0224 extends LinearOpMode {
+public class Auto118_GyroTest0225 extends LinearOpMode {
     float[] data = new float[3];
     private static GyroSensorComponents gyroSensorComponents = null;
     //With Rear Camera Facing Forward
@@ -64,12 +64,12 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
     }
 
     static void drive(int inches)   {
-        int targetTicks = robot.get_ticks_degrees(inches);
+        int targetTicks = robot.getNumTicks(inches);
         robot.reset_drive_encoders();
         robot.RunWithEncoders();
 
         while(!robot.have_encoders_reached(targetTicks))    {
-            robot.set_drive_power(DRIVE_POWER);
+            robot.set_drive_power(-DRIVE_POWER);
         }
         robot.set_drive_power(0.0);
     }
@@ -96,7 +96,7 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
 
         if(degrees < 0)    {   //Turn CCW
             while(-Math.abs(currHeading - initialHeading) > degrees)    {
-                robot.set_drive_power(-DRIVE_POWER, DRIVE_POWER);
+                robot.set_drive_power(DRIVE_POWER, -DRIVE_POWER);
                 currHeading = getCurrentHeading();
                 if(currHeading < 180)   {
                     currHeading += 360;
@@ -111,7 +111,7 @@ public class Auto118_GyroTest0224 extends LinearOpMode {
         }
         else    { //Turn CW
             while(Math.abs(currHeading - initialHeading) < degrees)    {
-                robot.set_drive_power(DRIVE_POWER, -DRIVE_POWER);
+                robot.set_drive_power(-DRIVE_POWER, DRIVE_POWER);
                 currHeading = getCurrentHeading();
                 if(currHeading < 180)   {
                     currHeading += 360;

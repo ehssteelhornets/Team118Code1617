@@ -12,7 +12,9 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
     }
 
     @Override
-    public void start() {}
+    public void start() {
+        LEDs.setPower(1.0);
+    }
 
     @Override
 
@@ -103,9 +105,9 @@ public class TeleOp1020 extends HardwareMethods118_1617 {
 
             if (elevator != null) {
                 if (gamepad2.left_trigger != 0)
-                    elevator.setPower(1);
-                else if (gamepad2.y)
                     elevator.setPower(-1);
+                else if (gamepad2.y)
+                    elevator.setPower(1);
                 else
                     elevator.setPower(0);
 

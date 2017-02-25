@@ -34,6 +34,8 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     static DcMotor intake;
     static DcMotor elevator;
     static Servo queue;
+    public DcMotor LEDs;
+
 
     static double right;
     static double left;
@@ -71,13 +73,53 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     @Override
     public void init() {
 
-        r$rear = hardwareMap.dcMotor.get("rrear");
-        r$front = hardwareMap.dcMotor.get("rfore");
-        l$front = hardwareMap.dcMotor.get("lfore");
-        l$rear = hardwareMap.dcMotor.get("lrear");
+        try {
+            LEDs = hardwareMap.dcMotor.get("leds");
+        }
+        catch (Exception e) {
+            LEDs = null;
+        }
+        try {
+            LEDs.setPower(1.0);
+        }
+        catch (Exception e) {
+            LEDs = null;
+        }
 
-        r$rear.setDirection(DcMotor.Direction.REVERSE);
-        r$front.setDirection(DcMotor.Direction.REVERSE);
+        try {
+            r$rear = hardwareMap.dcMotor.get("rrear");
+            r$rear.setDirection(DcMotor.Direction.REVERSE);
+
+        }
+        catch (Exception e) {
+            r$rear = null;
+
+        }
+        try {
+            r$front = hardwareMap.dcMotor.get("rfore");
+            r$front.setDirection(DcMotor.Direction.REVERSE);
+        }
+        catch (Exception e) {
+            r$front = null;
+        }
+
+        try {
+            l$front = hardwareMap.dcMotor.get("lfore");
+
+        }
+        catch (Exception e) {
+            l$front = null;
+
+        }
+
+        try {
+
+            l$rear = hardwareMap.dcMotor.get("lrear");
+        }
+        catch (Exception e) {
+
+            l$rear = null;
+        }
 
         try {
             elevator = hardwareMap.dcMotor.get("elevator");
