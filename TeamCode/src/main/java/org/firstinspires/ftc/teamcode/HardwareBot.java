@@ -9,7 +9,10 @@ import com.qualcomm.robotcore.hardware.DigitalChannelController;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcontroller.internal.GyroSensorComponents;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import static java.lang.Thread.sleep;
 
 /**
  * Created by Steel Hornets on 10/18/2016.
@@ -41,7 +44,6 @@ public class HardwareBot  {
     public ColorSensor leftSensor;
     public ColorSensor rightSensor;
     public DeviceInterfaceModule cdim;
-    public MultiplexColorSensor csLeft, csRight;
 
     public boolean precisionMode = false;
 
@@ -54,13 +56,24 @@ public class HardwareBot  {
     static final double lServoUp = .40;
     static final double rServoUp = .50;
 
+    static final double DRIVE_POWER = 0.5;
 
+    public Color teamColor;
+    public double initialHeading;
+    public enum Orientation{TANGENTAL, PERPENDICULAR}
+    public Orientation phoneOrientation = Orientation.PERPENDICULAR;
+
+    public GyroSensorComponents gyroSensorComponents = null;
+
+    public Telemetry telem;
 
     public static int scooperIndex = 2; // Start With Scoop Up Ready to Deploy
 
 
     public static MultiplexColorSensor muxColor;
     public static int[] ports = {0,1};
+
+    public enum Color {RED,BLUE};
 
     HardwareMap hardwareMap= null;
 
@@ -442,6 +455,198 @@ public class HardwareBot  {
         return r$rear.getCurrentPosition() == 0;
     }
 
+    /**
+     * Gyroscope Methods
+     */
+
+    /**
+     *
+     * @param inches
+     */
+    void drive(int inches)   {
+        int targetTicks = getNumTicks(inches);
+        this.reset_drive_encoders();
+        this.RunWithEncoders();
+        if (inches >0) {
+            while (!this.have_encoders_reached(targetTicks)) {
+                this.set_drive_power(-DRIVE_POWER);
+            }
+        }
+        else{
+            while (!this.have_encoders_reached(targetTicks)) {
+                this.set_drive_power(DRIVE_POWER);
+            }
+        }
+
+        this.set_drive_power(0.0);
+    }
+
+    /**
+     *
+     * @param degrees
+     */
+    //Degrees to turn. Direction indicated by sign. Postive is Clockwise
+    //initial Heading in degrees from 0-360
+    void turn(double degrees)    {
+
+         initialHeading = getCurrentHeading();
+
+        if(initialHeading < 180)   {
+            initialHeading += 360;
+        }
+        else    {
+            initialHeading -= 360;
+        }
+
+        double currHeading = initialHeading;
+
+        if(degrees < 0)    {   //Turn CCW
+            while(-Math.abs(currHeading - initialHeading) > degrees)    {
+                set_drive_power(DRIVE_POWER, -DRIVE_POWER);
+                currHeading = getCurrentHeading();
+                if(currHeading < 180)   {
+                    currHeading += 360;
+                }
+                else    {
+                    currHeading -= 360;
+                }
+                telem.addData("Heading",currHeading);
+                telem.update();
+            }
+        }
+        else    { //Turn CW
+            while(Math.abs(currHeading - initialHeading) < degrees)    {
+                set_drive_power(-DRIVE_POWER, DRIVE_POWER);
+                currHeading = getCurrentHeading();
+                if(currHeading < 180)   {
+                    currHeading += 360;
+                }
+                else    {
+                    currHeading -= 360;
+                }
+                telem.addData("Heading",currHeading);
+                telem.update();
+            }
+        }
+        set_drive_power(0.0);
+    }
+
+    /**
+     *
+     * @return
+     */
+    double getCurrentHeading()   {
+        double currentHeading;
+        if(phoneOrientation == Orientation.PERPENDICULAR) {
+            currentHeading = geoVectorToDegrees(gyroSensorComponents.rotationData[0]);
+        }
+        else {
+            currentHeading = geoVectorToDegrees(gyroSensorComponents.rotationData[0]);//?
+        }
+        return currentHeading;
+    }
+
+    /**
+     *
+     * @param angle
+     * @return
+     */
+    static double geoVectorToDegrees(double angle)    {
+        double theta =  Math.toDegrees(angle);
+        if (theta < 0.0) {
+            theta += 360;
+        }
+        return theta;
+    }
+
+    /**
+     * Color Sensor Logic
+     */
+    boolean leftRed() throws InterruptedException
+    {
+        muxColor.startPolling();
+        int[] r1 = new int[2];
+        boolean r1b; //auto init to false
+        int[] b1 = new int[2];
+        boolean b1b;
+        int[] r2 = new int[2];
+        boolean r2b ;
+        for (int i=0; i<ports.length; i++) {
+            int[] crgb = muxColor.getCRGB(ports[i]);
+            r1[i] = crgb[1];
+            b1[i] = crgb[3];
+        }
+
+        sleep(500);
+        //Sleep HOW LONG NOONE KNOWS
 
 
+        for (int i=0; i<ports.length; i++) {
+            int[] crgb = muxColor.getCRGB(HardwareBot.ports[i]);
+            r2[i] = crgb[1];
+        }
+
+
+
+        if(r1[0] > r1[1]) {
+            r1b = true;
+        }
+        else {
+            r1b = false;
+        }
+
+        if(b1[0] > b1[1]) {
+            b1b = false;
+        }
+        else {
+            b1b = true;
+        }
+
+        if(r2[0] > r2[1]) {
+            r2b = true;
+        }
+        else {
+            r2b = false;
+        }
+
+        if(r1b && r2b && b1b || r1b && r2b || r1b && b1b || b1b && r2b)
+        {
+            return true;
+        }
+        else{
+
+            return false;
+        }
+
+    }
+
+    /**
+     * @return true if left red false if right red
+     * @throws InterruptedException
+     */
+    boolean doColorSensor() throws InterruptedException {
+        boolean leftRed = leftRed();
+
+        switch (teamColor)  {
+            case RED:
+                if(leftRed)  {
+                    lPusher.setPosition(lServoDown);
+
+                }
+                else {
+                    rPusher.setPosition(rServoDown);
+                }
+                break;
+            case BLUE:
+                if(leftRed)  {
+                   rPusher.setPosition(rServoDown);
+                }
+                else {
+                   lPusher.setPosition(lServoDown);
+
+                }
+                break;
+        }
+        return leftRed;
+    }
 }
