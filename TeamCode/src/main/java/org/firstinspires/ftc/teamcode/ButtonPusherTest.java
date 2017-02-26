@@ -79,25 +79,21 @@ public class ButtonPusherTest extends LinearOpMode {
                 switch (teamColor) {
                     case RED:
                         robot.lPusher.setPosition(robot.lServoDown);
-                        sleep(500);
-                        robot.lPusher.setPosition(robot.lServoUp);
+                        robot.rPusher.setPosition(robot.rServoUp);
                         break;
                     case BLUE:
                         robot.rPusher.setPosition(robot.rServoDown);
-                        sleep(500);
-                        robot.rPusher.setPosition(robot.rServoUp);
+                        robot.lPusher.setPosition(robot.rServoUp);
                         break;
                 }
             } else {
                 switch (teamColor) {
                     case RED:
-                        robot.lPusher.setPosition(robot.lServoDown);
-                        sleep(500);
+                        robot.rPusher.setPosition(robot.lServoDown);
                         robot.lPusher.setPosition(robot.lServoUp);
                         break;
                     case BLUE:
-                        robot.rPusher.setPosition(robot.rServoDown);
-                        sleep(200);
+                        robot.lPusher.setPosition(robot.rServoDown);
                         robot.rPusher.setPosition(robot.rServoUp);
                         break;
                 }

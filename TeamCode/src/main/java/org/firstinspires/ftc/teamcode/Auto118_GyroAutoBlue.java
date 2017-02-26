@@ -28,11 +28,12 @@ public class Auto118_GyroAutoBlue extends LinearOpMode {
        try{
            robot.gyroSensorComponents = ((FtcRobotControllerActivity) hardwareMap.appContext).getGyroSensorComponents();
        }catch(Exception e){}
+
        waitForStart();
-       int opState = -1;
+       int opState = 1;
        robot.telem=telemetry;
        robot.teamColor = HardwareBot.Color.BLUE;//BLUE TEAM
-       boolean leftRed;
+       boolean leftRed = false;
        while(opModeIsActive()) {
            telemetry.addData("X", robot.gyroSensorComponents.rotationData[0]);
            telemetry.addData("Y", robot.gyroSensorComponents.rotationData[1]);
@@ -41,7 +42,8 @@ public class Auto118_GyroAutoBlue extends LinearOpMode {
            telemetry.update();
 
            switch(opState) {
-               case -1:
+
+               case 1:
                    robot.shooter.setPower(1);
                    sleep(1450);
                    robot.shooter.setPower(0);
@@ -51,36 +53,38 @@ public class Auto118_GyroAutoBlue extends LinearOpMode {
                    robot.shooter.setPower(1);
                    sleep(1450);
                    robot.shooter.setPower(0);
+                   opState ++;
+                   break;
 
-               case 0:
-                   robot.drive(24*(8^(1/2)));
+               case 2:
+                   robot.drive(70);
                    opState++;
                    break;
-               case 1:
+               case 3:
                    robot.initialHeading = robot.getCurrentHeading();
                    telemetry.addData("Init:", robot.initialHeading);
                    telemetry.update();
-                   robot.turn(45);
+                   robot.turn(-135);
                    driven =1;
                    opState++;
                    break;
-               case 2:
+               case 4:
                    robot.drive(45);
                    opState++;
                    break;
-               case 3://Check Color and lower arm
+               case 5://Check Color and lower arm
                    leftRed=robot.doColorSensor();
                    opState++;
                    break;
-               case 4:
+               case 6:
                    robot.drive(3); //adjust as needed
                    opState++;
                    break;
-               case 5:
+               case 7:
                    robot.drive(-6);
                    opState++;
                    break;
-               case 6:
+               case 8:
                    //pusher up
                    if(leftRed)
                        robot.lPusher.setPosition(robot.lServoUp);
@@ -88,25 +92,16 @@ public class Auto118_GyroAutoBlue extends LinearOpMode {
                    robot.rPusher.setPosition(robot.rServoUp);
                    opState++;
                    break;
-               case 7:
+               case 9:
                    robot.turn(-90);
                    opState++;
                    break;
-               case 8:
+               case 10:
                    robot.drive(48);
                    opState++;
                    break;
-               case 9:
-                   robot.turn(90);
-                   opState++;
-                   break;
-               case 10:
-                   robot.drive(3);
-                   opState++;
-                   break;
                case 11:
-                   //check color and lower arm
-                   leftRed = robot.doColorSensor();
+                   robot.turn(90);
                    opState++;
                    break;
                case 12:
@@ -114,22 +109,31 @@ public class Auto118_GyroAutoBlue extends LinearOpMode {
                    opState++;
                    break;
                case 13:
-                   robot.drive(-6);
+                   //check color and lower arm
+                   leftRed = robot.doColorSensor();
                    opState++;
                    break;
                case 14:
+                   robot.drive(3);
+                   opState++;
+                   break;
+               case 15:
+                   robot.drive(-6);
+                   opState++;
+                   break;
+               case 16:
                    if(leftRed)
                        robot.lPusher.setPosition(robot.lServoUp);
                    else
                        robot.rPusher.setPosition(robot.rServoUp);
                    opState++;
                    break;
-               case 15:
+               case 17:
                    robot.turn(135);
                    opState++;
                    break;
-               case 16:
-                   robot.drive((2*(8^(1/2)))-3);
+               case 18:
+                   robot.drive(67);
                    opState++;
                    break;
 

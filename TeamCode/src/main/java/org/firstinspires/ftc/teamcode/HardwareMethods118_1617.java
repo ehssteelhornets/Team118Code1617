@@ -55,7 +55,7 @@ public abstract class HardwareMethods118_1617 extends OpMode {
     static boolean lPusherDown = false;
     static boolean rPusherDown = false;
 
-    static final double lServoDown = .90;//
+    static final double lServoDown = .85;//
     static final double rServoDown= .0;
     static final double lServoUp = .40;
     static final double rServoUp = .50;

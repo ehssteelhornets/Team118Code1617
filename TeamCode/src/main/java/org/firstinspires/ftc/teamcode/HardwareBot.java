@@ -51,8 +51,8 @@ public class HardwareBot  {
     public boolean lPusherDown = false;
     public boolean rPusherDown = false;
 
-    static final double lServoDown = .90;//
-    static final double rServoDown= .0;
+    static final double lServoDown = .85;//
+    static final double rServoDown= .1;
     static final double lServoUp = .40;
     static final double rServoUp = .50;
 
@@ -469,12 +469,12 @@ public class HardwareBot  {
         this.RunWithEncoders();
         if (inches >0) {
             while (!this.have_encoders_reached(targetTicks)) {
-                this.set_drive_power(-DRIVE_POWER);
+                this.set_drive_power(DRIVE_POWER);
             }
         }
         else{
             while (!this.have_encoders_reached(targetTicks)) {
-                this.set_drive_power(DRIVE_POWER);
+                this.set_drive_power(-DRIVE_POWER);
             }
         }
 

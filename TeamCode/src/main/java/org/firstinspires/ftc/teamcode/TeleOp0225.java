@@ -38,17 +38,17 @@ public class TeleOp0225 extends HardwareMethods118_1617 {
 
 
         //Left Button Pusher
+        //Left Button Pusher
         if (lPusher != null) {
             if (gamepad1.left_bumper) {
-                if (lPusherDown) {
-                    lPusher.setPosition(lServoDown);
-                    lPusherDown = true;
-                } else {
-                    lPusher.setPosition(lServoUp);
-                    lPusherDown = false;
-                }
-                //busySleep(500);
+                lPusher.setPosition(lServoDown);
+
+            }else {
+                lPusher.setPosition(lServoUp);
+
             }
+            //busySleep(500);
+        }
 
 
             //Right Button Pusher
@@ -131,7 +131,7 @@ public class TeleOp0225 extends HardwareMethods118_1617 {
             }
             printTelemetry();
         }
-    }
+
 
 
     static void drive(boolean precise, boolean reverse) {
